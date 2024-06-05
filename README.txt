@@ -144,3 +144,47 @@ make -j16 && scp drivers/gpu/drm/imx/imx8mp-dsi-crosslink-oled/imx8mp-dsi-crossl
 # && ssh root@192.168.30.11 'reboot'
 
 cat /proc/device-tree/soc\@0/bus\@32c00000/mipi_dsi\@32e60000/status
+
+
+# -----------------------------------------------------------------------------
+
+	# Yocto (?)
+nano ~/phyLinux/build/linux-imx/drivers/gpu/drm/imx/imx8mp-dsi-crosslink-oled.c
+
+	# copy kernel module to ~/jarsulk-pco repository
+source_dir=~/phyLinux/build/linux-imx/drivers/gpu/drm/imx/
+#??? backup_dir=~/jarsulk-pco/projects/SOD-5/Programs/a53/kernel_space/sod5_m7_kernel_driver/sod5_m7_kernel_driver/
+#cp ${source_dir}_readme.txt ${source_dir}modules.order ${source_dir}Makefile ${source_dir}{main,parse_procfs_commands,procfs,rpmsg,sod_registers}.{c,h} $backup_dir
+
+	# add new driver to kernel configuration
+nano ~/phyLinux/build/linux-imx/.config.new
+# ---------------------------------------------------------
+# Graphics support
+# ...
+CONFIG_IMX8MP_DSI_CROSSLINK_OLED=y
+# ---------------------------------------------------------
+
+nano ~/phyLinux/build/linux-imx/drivers/gpu/drm/imx/Makefile
+# ---------------------------------------------------------
+obj-$(CONFIG_IMX8MP_DSI_CROSSLINK_OLED) += imx8mp-dsi-crosslink-oled.o
+# ---------------------------------------------------------
+
+nano ~/phyLinux/build/linux-imx/drivers/gpu/drm/imx/Makefile
+# ---------------------------------------------------------
+config CONFIG_IMX8MP_DSI_CROSSLINK_OLED
+	tristate "I.MX 8M Plus DSI - Crosslink - OLED driver"
+	default m
+	depends on OF
+	select DRM_MIPI_DSI
+	select DRM_KMS_HELPER
+	select DRM_PANEL
+	help
+	  I.MX 8M Plus DSI - Crosslink - OLED driver
+# ---------------------------------------------------------
+
+	# compile and deploy kernel
+bitbake linux-imx -c compile -f && bitbake linux-imx -c deploy
+
+	# copy Kernel to SD card
+cp deploy/images/phyboard-pollux-imx8mp-3/Image /media/p2119/boot/
+sync; umount /media/$USER/boot; umount /media/$USER/root
