@@ -1,0 +1,9 @@
+DSI probe
+DSI probe2, err=0
+
+imx-drm display-subsystem: bound 32e60000.mipi_dsi (ops imx_sec_dsim_ops)
+imx-drm display-subsystem: bound 32c00000.bus:ldb@32ec005c (ops imx8mp_ldb_ops)
+dwhdmi-imx 32fd8000.hdmi: Detected HDMI TX controller v2.13a with HDCP (samsung_dw_hdmi_phy2)
+dwhdmi-imx 32fd8000.hdmi: registered DesignWare HDMI I2C bus driver
+imx-drm display-subsystem: bound 32fd8000.hdmi (ops dw_hdmi_imx_ops)
+[drm] Initialized imx-drm 1.0.0 20120507 for display-subsystem on minor 1

@@ -1,0 +1,792 @@
+U-Boot SPL 2021.04 (May 02 2023 - 13:48:21 +0000)                                                                       
+phytec_eeprom_data_init: EEPROM is not flashed. Prototype?                                                              
+phytec_eeprom_data_setup: init failed. Trying fall back address 0x59                                                    
+phytec_eeprom_data_init: init successful                                                                                
+SoM: PCM-070-0F3243I.A3 PCB rev: 2                                                                                      
+DDRINFO: start DRAM init                                                                                                
+DDRINFO: DRAM rate 3000MTS                                                                                              
+DDRINFO:ddrphy calibration done                                                                                         
+DDRINFO: ddrmix config done                                                                                             
+WDT:   Started with servicing (60s timeout)                                                                             
+Trying to boot from BOOTROM                                                                                             
+image offset 0x8000, pagesize 0x200, ivt offset 0x0                                                                     
+NOTICE:  BL31: v2.4(release):lf-5.10.72-2.2.0-0-g5782363f9                                                              
+NOTICE:  BL31: Built : 12:17:17, Nov 18 2021                                                                            
+                                                                                                                        
+                                                                                                                        
+U-Boot 2021.04 (May 02 2023 - 13:48:21 +0000)                                                                           
+                                                                                                                        
+CPU:   i.MX8MP[8] rev1.1 1600 MHz (running at 1200 MHz)                                                                 
+CPU:   Industrial temperature grade (-40C to 105C) at 43C                                                               
+Reset cause: POR                                                                                                        
+Model: PHYTEC phyBOARD-Pollux i.MX8MP                                                                                   
+DRAM:  phytec_eeprom_data_init: EEPROM is not flashed. Prototype?                                                       
+phytec_eeprom_data_setup: init failed. Trying fall back address 0x59                                                    
+2 GiB                                                                                                                   
+phytec_eeprom_data_init: EEPROM is not flashed. Prototype?                                                              
+phytec_eeprom_data_setup: init failed. Trying fall back address 0x59                                                    
+WDT:   Started with servicing (60s timeout)                                                                             
+MMC:   FSL_SDHC: 1, FSL_SDHC: 2                                                                                         
+Loading Environment from MMC... OK                                                                                      
+In:    serial                                                                                                           
+Out:   serial                                                                                                           
+Err:   serial                                                                                                           
+flash target is MMC:1                                                                                                   
+Net:   DP83867                                                                                                          
+eth0: ethernet@30be0000                                                                                                 
+Fastboot: Normal                                                                                                        
+Normal Boot                                                                                                             
+Hit any key to stop autoboot:  0                                                                                        
+## Error: "boot_m7" not defined                                                                                         
+switch to partitions #0, OK                                                                                             
+mmc1 is current device                                                                                                  
+clk qspi_root_clk already disabled                                                                                      
+clk qspi_root_clk already disabled                                                                                      
+SF: Detected mt25qu512a with page size 256 Bytes, erase size 64 KiB, total 64 MiB                                       
+31123968 bytes read in 1293 ms (23 MiB/s)                                                                               
+Booting from mmc ...                                                                                                    
+SF: Detected mt25qu512a with page size 256 Bytes, erase size 64 KiB, total 64 MiB                                       
+48 bytes read in 0 ms                                                                                                   
+76320 bytes read in 5 ms (14.6 MiB/s)                                                                                   
+Found 0 extension board(s).                                                                                             
+6725 bytes read in 2 ms (3.2 MiB/s)                                                                                     
+Moving Image from 0x40480000 to 0x40600000, end=42440000                                                                
+## Flattened Device Tree blob at 48000000                                                                               
+   Booting using the fdt blob at 0x48000000                                                                             
+   Loading Device Tree to 000000007bcf2000, end 000000007bd09fff ... OK                                                 
+                                                                                                                        
+Starting kernel ...                                                                                                     
+                                                                                                                        
+Booting Linux on physical CPU 0x0000000000 [0x410fd034]                                                  
+Linux version 5.10.72-bsp-yocto-nxp-i.mx8mp-pd22.1.1 (oe-user@oe-host) (aarch64-phytec-linux-gcc (GCC) 10
+.2.0, GNU ld (GNU Binutils) 2.36.1.20210209) #1 SMP PREEMPT Fri Jul 21 05:45:23 UTC 2023                                
+Machine model: PHYTEC phyBOARD-Pollux i.MX8MP                                                            
+efi: UEFI not found.                                                                                     
+OF: reserved mem: failed to allocate memory for node 'linux,cma'                                         
+Reserved memory: created DMA memory pool at 0x0000000094300000, size 1 MiB                               
+OF: reserved mem: initialized node vdev0buffer@94300000, compatible id shared-dma-pool                   
+NUMA: No NUMA configuration found                                                                        
+NUMA: Faking a node at [mem 0x0000000040000000-0x00000000bfffffff]                                       
+NUMA: NODE_DATA [mem 0xbfc4f700-0xbfc51fff]                                                              
+Zone ranges:                                                                                             
+  DMA      [mem 0x0000000040000000-0x00000000bfffffff]                                                   
+  DMA32    empty                                                                                         
+  Normal   empty                                                                                         
+Movable zone start for each node                                                                         
+Early memory node ranges                                                                                 
+  node   0: [mem 0x0000000040000000-0x00000000557fffff]                                                  
+  node   0: [mem 0x0000000055800000-0x0000000055ffffff]                                                  
+  node   0: [mem 0x0000000056000000-0x000000007ddfffff]                                                  
+  node   0: [mem 0x000000007fe00000-0x00000000923fffff]                                                  
+  node   0: [mem 0x0000000092400000-0x00000000a43fffff]                                                  
+  node   0: [mem 0x00000000a4400000-0x00000000bfffffff]                                                  
+Initmem setup node 0 [mem 0x0000000040000000-0x00000000bfffffff]                                         
+cma: Reserved 320 MiB at 0x00000000a8000000                                                              
+psci: probing for conduit method from DT.                                                                
+psci: PSCIv1.1 detected in firmware.                                                                     
+psci: Using standard PSCI v0.2 function IDs                                                              
+psci: Trusted OS migration not required                                                                  
+psci: SMC Calling Convention v1.2                                                                        
+percpu: Embedded 23 pages/cpu s56600 r8192 d29416 u94208                                                 
+Detected VIPT I-cache on CPU0                                                                            
+CPU features: detected: ARM erratum 845719                                                               
+CPU features: detected: GIC system register CPU interface                                                
+Built 1 zonelists, mobility grouping on.  Total pages: 507904                                            
+Policy zone: DMA                                                                                         
+Kernel command line: console=ttymxc0,115200 root=/dev/mmcblk1p2 fsck.repair=yes rootwait rw video=HDMI-A-
+1:1920x1080@60                                                                                                          
+Dentry cache hash table entries: 262144 (order: 9, 2097152 bytes, linear)                                
+Inode-cache hash table entries: 131072 (order: 8, 1048576 bytes, linear)                                 
+mem auto-init: stack:off, heap alloc:off, heap free:off                                                  
+Memory: 1362552K/2064384K available (18432K kernel code, 1594K rwdata, 7168K rodata, 3072K init, 549K bss
+, 374152K reserved, 327680K cma-reserved)                                                                               
+SLUB: HWalign=64, Order=0-3, MinObjects=0, CPUs=4, Nodes=1                                               
+rcu: Preemptible hierarchical RCU implementation.                                                        
+rcu:     RCU event tracing is enabled.                                                                   
+rcu:     RCU restricting CPUs from NR_CPUS=256 to nr_cpu_ids=4.                                          
+ Trampoline variant of Tasks RCU enabled.                                                                
+ Tracing variant of Tasks RCU enabled.                                                                   
+rcu: RCU calculated value of scheduler-enlistment delay is 25 jiffies.                                   
+rcu: Adjusting geometry for rcu_fanout_leaf=16, nr_cpu_ids=4                                             
+NR_IRQS: 64, nr_irqs: 64, preallocated irqs: 0                                                           
+GICv3: GIC: Using split EOI/Deactivate mode                                                              
+GICv3: 160 SPIs implemented                                                                              
+GICv3: 0 Extended SPIs implemented                                                                       
+GICv3: Distributor has no Range Selector support                                                         
+GICv3: 16 PPIs implemented                                                                               
+GICv3: CPU0: found redistributor 0 region 0:0x0000000038880000                                           
+ITS: No ITS available, not enabling LPIs                                                                 
+random: get_random_bytes called from start_kernel+0x320/0x4e0 with crng_init=0                           
+arch_timer: cp15 timer(s) running at 8.00MHz (phys).                                                     
+clocksource: arch_sys_counter: mask: 0xffffffffffffff max_cycles: 0x1d854df40, max_idle_ns: 440795202120 
+ns                                                                                                                      
+sched_clock: 56 bits at 8MHz, resolution 125ns, wraps every 2199023255500ns                              
+Console: colour dummy device 80x25                                                                       
+Calibrating delay loop (skipped), value calculated using timer frequency.. 16.00 BogoMIPS (lpj=32000)    
+pid_max: default: 32768 minimum: 301                                                                     
+LSM: Security Framework initializing                                                                     
+Mount-cache hash table entries: 4096 (order: 3, 32768 bytes, linear)                                     
+Mountpoint-cache hash table entries: 4096 (order: 3, 32768 bytes, linear)                                
+rcu: Hierarchical SRCU implementation.                                                                   
+EFI services will not be available.                                                                      
+smp: Bringing up secondary CPUs ...                                                                      
+Detected VIPT I-cache on CPU1                                                                            
+GICv3: CPU1: found redistributor 1 region 0:0x00000000388a0000                                           
+CPU1: Booted secondary processor 0x0000000001 [0x410fd034]                                               
+Detected VIPT I-cache on CPU2                                                                            
+GICv3: CPU2: found redistributor 2 region 0:0x00000000388c0000                                           
+CPU2: Booted secondary processor 0x0000000002 [0x410fd034]                                               
+Detected VIPT I-cache on CPU3                                                                            
+GICv3: CPU3: found redistributor 3 region 0:0x00000000388e0000                                           
+CPU3: Booted secondary processor 0x0000000003 [0x410fd034]                                               
+smp: Brought up 1 node, 4 CPUs                                                                           
+SMP: Total of 4 processors activated.                                                                    
+CPU features: detected: 32-bit EL0 Support                                                               
+CPU features: detected: CRC32 instructions                                                               
+CPU features: detected: 32-bit EL1 Support                                                               
+CPU: All CPU(s) started at EL2                                                                           
+alternatives: patching kernel code                                                                       
+devtmpfs: initialized                                                                                    
+KASLR disabled due to lack of seed                                                                       
+clocksource: jiffies: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 7645041785100000 ns          
+futex hash table entries: 1024 (order: 4, 65536 bytes, linear)                                           
+pinctrl core: initialized pinctrl subsystem                                                              
+DMI not present or invalid.                                                                              
+NET: Registered protocol family 16                                                                       
+DMA: preallocated 256 KiB GFP_KERNEL pool for atomic allocations                                         
+DMA: preallocated 256 KiB GFP_KERNEL|GFP_DMA pool for atomic allocations                                 
+DMA: preallocated 256 KiB GFP_KERNEL|GFP_DMA32 pool for atomic allocations                               
+thermal_sys: Registered thermal governor 'step_wise'                                                     
+thermal_sys: Registered thermal governor 'power_allocator'                                               
+cpuidle: using governor menu                                                                             
+hw-breakpoint: found 6 breakpoint and 4 watchpoint registers.                                            
+ASID allocator initialised with 65536 entries                                                            
+Serial: AMBA PL011 UART driver                                                                           
+imx mu driver is registered.                                                                             
+imx rpmsg driver is registered.                                                                          
+imx8mp-pinctrl 30330000.pinctrl: initialized IMX pinctrl driver                                          
+HugeTLB registered 1.00 GiB page size, pre-allocated 0 pages                                             
+HugeTLB registered 32.0 MiB page size, pre-allocated 0 pages                                             
+HugeTLB registered 2.00 MiB page size, pre-allocated 0 pages                                             
+HugeTLB registered 64.0 KiB page size, pre-allocated 0 pages                                             
+cryptd: max_cpu_qlen set to 1000                                                                         
+ACPI: Interpreter disabled.                                                                              
+iommu: Default domain type: Translated                                                                   
+vgaarb: loaded                                                                                           
+SCSI subsystem initialized                                                                               
+usbcore: registered new interface driver usbfs                                                           
+usbcore: registered new interface driver hub                                                             
+usbcore: registered new device driver usb                                                                
+mc: Linux media interface: v0.10                                                                         
+videodev: Linux video capture interface: v2.00                                                           
+pps_core: LinuxPPS API ver. 1 registered                                                                 
+pps_core: Software ver. 5.3.6 - Copyright 2005-2007 Rodolfo Giometti <giometti@linux.it>                 
+PTP clock support registered                                                                             
+EDAC MC: Ver: 3.0.0                                                                                      
+FPGA manager framework                                                                                   
+Advanced Linux Sound Architecture Driver Initialized.                                                    
+Bluetooth: Core ver 2.22                                                                                 
+NET: Registered protocol family 31                                                                       
+Bluetooth: HCI device and connection manager initialized                                                 
+Bluetooth: HCI socket layer initialized                                                                  
+Bluetooth: L2CAP socket layer initialized                                                                
+Bluetooth: SCO socket layer initialized                                                                  
+clocksource: Switched to clocksource arch_sys_counter                                                    
+VFS: Disk quotas dquot_6.6.0                                                                             
+VFS: Dquot-cache hash table entries: 512 (order 0, 4096 bytes)                                           
+pnp: PnP ACPI: disabled                                                                                  
+NET: Registered protocol family 2                                                                        
+IP idents hash table entries: 32768 (order: 6, 262144 bytes, linear)                                     
+tcp_listen_portaddr_hash hash table entries: 1024 (order: 2, 16384 bytes, linear)                        
+TCP established hash table entries: 16384 (order: 5, 131072 bytes, linear)                               
+TCP bind hash table entries: 16384 (order: 6, 262144 bytes, linear)                                      
+TCP: Hash tables configured (established 16384 bind 16384)                                               
+UDP hash table entries: 1024 (order: 3, 32768 bytes, linear)                                             
+UDP-Lite hash table entries: 1024 (order: 3, 32768 bytes, linear)                                        
+NET: Registered protocol family 1                                                                        
+RPC: Registered named UNIX socket transport module.                                                      
+RPC: Registered udp transport module.                                                                    
+RPC: Registered tcp transport module.                                                                    
+RPC: Registered tcp NFSv4.1 backchannel transport module.                                                
+PCI: CLS 0 bytes, default 64                                                                             
+hw perfevents: enabled with armv8_pmuv3 PMU driver, 7 counters available                                 
+kvm [1]: IPA Size Limit: 40 bits                                                                         
+kvm [1]: GICv3: no GICV resource entry                                                                   
+kvm [1]: disabling GICv2 emulation                                                                       
+kvm [1]: GIC system register CPU interface enabled                                                       
+kvm [1]: vgic interrupt IRQ9                                                                             
+kvm [1]: Hyp mode initialized successfully                                                               
+Initialise system trusted keyrings                                                                       
+workingset: timestamp_bits=42 max_order=19 bucket_order=0                                                
+squashfs: version 4.0 (2009/01/31) Phillip Lougher                                                       
+NFS: Registering the id_resolver key type                                                                
+Key type id_resolver registered                                                                          
+Key type id_legacy registered                                                                            
+nfs4filelayout_init: NFSv4 File Layout Driver Registering...                                             
+nfs4flexfilelayout_init: NFSv4 Flexfile Layout Driver Registering...                                     
+jffs2: version 2.2. (NAND) © 2001-2006 Red Hat, Inc.                                                     
+9p: Installing v9fs 9p2000 file system support                                                           
+Key type asymmetric registered                                                                           
+Asymmetric key parser 'x509' registered                                                                  
+Block layer SCSI generic (bsg) driver version 0.4 loaded (major 241)                                     
+io scheduler mq-deadline registered                                                                      
+io scheduler kyber registered                                                                            
+samsung-hdmi-phy 32fdff00.hdmiphy: failed to get phy apb clk: -517                                       
+imx8-pcie-phy 32f00000.pcie-phy: failed to get imx pcie phy clock                                        
+EINJ: ACPI disabled.                                                                                     
+mxs-dma 33000000.dma-apbh: initialized                                                                   
+Bus freq driver module loaded                                                                            
+Serial: 8250/16550 driver, 4 ports, IRQ sharing enabled                                                  
+30860000.serial: ttymxc0 at MMIO 0x30860000 (irq = 35, base_baud = 1500000) is a IMX                     
+printk: console [ttymxc0] enabled                                                                        
+30890000.serial: ttymxc1 at MMIO 0x30890000 (irq = 36, base_baud = 5000000) is a IMX                     
+imx-lcdifv3 32e80000.lcd-controller: No pix clock get: -517                                              
+imx-lcdifv3 32e90000.lcd-controller: No pix clock get: -517                                              
+imx-lcdifv3 32fc6000.lcd-controller: No irq get, ret=-517                                                
+imx-hdmi-pavi 32fc4000.hdmi-pai-pvi: No pvi clock get                                                    
+panel-simple panel0: supply power not found, using dummy regulator                                       
+panel-simple panel1: supply power not found, using dummy regulator                                       
+loop: module loaded                                                                                      
+megasas: 07.714.04.00-rc1                                                                                
+imx ahci driver is registered.                                                                           
+spi-nor spi0.0: mt25qu512a (65536 Kbytes)                                                                
+4 fixed-partitions partitions found on MTD device 30bb0000.spi                                           
+Creating 4 MTD partitions on "30bb0000.spi":                                                             
+0x000000000000-0x0000003c0000 : "u-boot"                                                                 
+0x0000003c0000-0x0000003e0000 : "env"                                                                    
+0x0000003e0000-0x000000400000 : "env_redund"                                                             
+0x000000400000-0x000004000000 : "none"                                                                   
+libphy: Fixed MDIO Bus: probed                                                                           
+tun: Universal TUN/TAP device driver, 1.6                                                                
+CAN device driver interface                                                                              
+thunder_xcv, ver 1.0                                                                                     
+thunder_bgx, ver 1.0                                                                                     
+nicpf, ver 1.0                                                                                           
+pps pps0: new PPS source ptp0                                                                            
+libphy: fec_enet_mii_bus: probed                                                                         
+fec 30be0000.ethernet eth0: registered PHC device 0                                                      
+hclge is initializing                                                                                    
+hns3: Hisilicon Ethernet Network Driver for Hip08 Family - version                                       
+hns3: Copyright (c) 2017 Huawei Corporation.                                                             
+e1000: Intel(R) PRO/1000 Network Driver                                                                  
+e1000: Copyright (c) 1999-2006 Intel Corporation.                                                        
+e1000e: Intel(R) PRO/1000 Network Driver                                                                 
+e1000e: Copyright(c) 1999 - 2015 Intel Corporation.                                                      
+igb: Intel(R) Gigabit Ethernet Network Driver                                                            
+igb: Copyright (c) 2007-2014 Intel Corporation.                                                          
+igbvf: Intel(R) Gigabit Virtual Function Network Driver                                                  
+igbvf: Copyright (c) 2009 - 2012 Intel Corporation.                                                      
+sky2: driver version 1.30                                                                                
+imx-dwmac 30bf0000.ethernet: IRQ eth_lpi not found                                                       
+usbcore: registered new interface driver r8152                                                           
+usbcore: registered new interface driver asix                                                            
+usbcore: registered new interface driver ax88179_178a                                                    
+usbcore: registered new interface driver cdc_ether                                                       
+usbcore: registered new interface driver net1080                                                         
+usbcore: registered new interface driver cdc_subset                                                      
+usbcore: registered new interface driver zaurus                                                          
+usbcore: registered new interface driver cdc_ncm                                                         
+VFIO - User Level meta-driver version: 0.3                                                               
+ehci_hcd: USB 2.0 'Enhanced' Host Controller (EHCI) Driver                                               
+ehci-pci: EHCI PCI platform driver                                                                       
+ehci-platform: EHCI generic platform driver                                                              
+ohci_hcd: USB 1.1 'Open' Host Controller (OHCI) Driver                                                   
+ohci-pci: OHCI PCI platform driver                                                                       
+ohci-platform: OHCI generic platform driver                                                              
+usbcore: registered new interface driver uas                                                             
+usbcore: registered new interface driver usb-storage                                                     
+usbcore: registered new interface driver usbserial_generic                                               
+usbserial: USB Serial support registered for generic                                                     
+usbcore: registered new interface driver ftdi_sio                                                        
+usbserial: USB Serial support registered for FTDI USB Serial Device                                      
+usbcore: registered new interface driver usb_serial_simple                                               
+usbserial: USB Serial support registered for carelink                                                    
+usbserial: USB Serial support registered for zio                                                         
+usbserial: USB Serial support registered for funsoft                                                     
+usbserial: USB Serial support registered for flashloader                                                 
+usbserial: USB Serial support registered for google                                                      
+usbserial: USB Serial support registered for libtransistor                                               
+usbserial: USB Serial support registered for vivopay                                                     
+usbserial: USB Serial support registered for moto_modem                                                  
+usbserial: USB Serial support registered for motorola_tetra                                              
+usbserial: USB Serial support registered for novatel_gps                                                 
+usbserial: USB Serial support registered for hp4x                                                        
+usbserial: USB Serial support registered for suunto                                                      
+usbserial: USB Serial support registered for siemens_mpi                                                 
+usbcore: registered new interface driver usb_ehset_test                                                  
+input: 30370000.snvs:snvs-powerkey as /devices/platform/soc@0/30000000.bus/30370000.snvs/30370000.snvs:sn
+vs-powerkey/input/input0                                                                                                
+usbcore: registered new interface driver usbtouchscreen                                                  
+snvs_rtc 30370000.snvs:snvs-rtc-lp: registered as rtc1                                                   
+i2c /dev entries driver                                                                                  
+Bluetooth: HCI UART driver ver 2.3                                                                       
+Bluetooth: HCI UART protocol H4 registered                                                               
+Bluetooth: HCI UART protocol BCSP registered                                                             
+Bluetooth: HCI UART protocol LL registered                                                               
+Bluetooth: HCI UART protocol ATH3K registered                                                            
+Bluetooth: HCI UART protocol Three-wire (H5) registered                                                  
+Bluetooth: HCI UART protocol Broadcom registered                                                         
+Bluetooth: HCI UART protocol QCA registered                                                              
+EDAC MC: ECC not enabled                                                                                 
+sdhci: Secure Digital Host Controller Interface driver                                                   
+sdhci: Copyright(c) Pierre Ossman                                                                        
+Synopsys Designware Multimedia Card Interface Driver                                                     
+sdhci-pltfm: SDHCI platform and OF driver helper                                                         
+sdhci-esdhc-imx 30b50000.mmc: voltage-ranges unspecified                                                 
+sdhci-esdhc-imx 30b60000.mmc: voltage-ranges unspecified                                                 
+ledtrig-cpu: registered to indicate activity on CPUs                                                     
+SMCCC: SOC_ID: ARCH_SOC_ID not implemented, skipping ....                                                
+caam-snvs 30370000.caam-snvs: violation handlers armed - init state                                      
+hid: raw HID events driver (C) Jiri Kosina                                                               
+usbcore: registered new interface driver usbhid                                                          
+usbhid: USB HID core driver                                                                              
+mmc2: SDHCI controller on 30b60000.mmc [30b60000.mmc] using ADMA                                         
+optee: probing for conduit method.                                                                       
+optee: revision 3.15 (c939619d)                                                                          
+optee: dynamic shared memory is enabled                                                                  
+optee: initialized driver                                                                                
+Galcore version 6.4.3.p2.336687                                                                          
+mmc2: new HS400 MMC card at address 0001                                                                 
+mmcblk2: mmc2:0001 Q2J55L 7.09 GiB                                                                       
+mmcblk2boot0: mmc2:0001 Q2J55L partition 1 16.0 MiB                                                      
+mmcblk2boot1: mmc2:0001 Q2J55L partition 2 16.0 MiB                                                      
+mmcblk2rpmb: mmc2:0001 Q2J55L partition 3 4.00 MiB, chardev (511:0)                                      
+[drm] Initialized vivante 1.0.0 20170808 for 40000000.mix_gpu_ml on minor 0                              
+hantrodec 0 : module inserted. Major = 509                                                               
+hantrodec 1 : module inserted. Major = 509                                                               
+hantroenc: HW at base <0000000038320000> with ID <0x80006200>                                            
+hx280enc: module inserted. Major <508>                                                                   
+fsl-sai 30c20000.sai: failed to get bus clock: -517                                                      
+fsl-aud2htx 30cb0000.aud2htx: failed to get mem clock                                                    
+imx-cdnhdmi sound-hdmi: snd_soc_register_card failed (-517)                                              
+NET: Registered protocol family 26                                                                       
+NET: Registered protocol family 10                                                                       
+Segment Routing with IPv6                                                                                
+NET: Registered protocol family 17                                                                       
+can: controller area network core                                                                        
+NET: Registered protocol family 29                                                                       
+can: raw protocol                                                                                        
+can: broadcast manager protocol                                                                          
+can: netlink gateway - max_hops=1                                                                        
+Bluetooth: RFCOMM TTY layer initialized                                                                  
+Bluetooth: RFCOMM socket layer initialized                                                               
+Bluetooth: RFCOMM ver 1.11                                                                               
+Bluetooth: BNEP (Ethernet Emulation) ver 1.3                                                             
+Bluetooth: BNEP filters: protocol multicast                                                              
+Bluetooth: BNEP socket layer initialized                                                                 
+Bluetooth: HIDP (Human Interface Emulation) ver 1.2                                                      
+Bluetooth: HIDP socket layer initialized                                                                 
+8021q: 802.1Q VLAN Support v1.8                                                                          
+lib80211: common routines for IEEE802.11 drivers                                                         
+9pnet: Installing 9P2000 support                                                                         
+tsn generic netlink module v1 init...                                                                    
+Key type dns_resolver registered                                                                         
+registered taskstats version 1                                                                           
+Loading compiled-in X.509 certificates                                                                   
+nxp-pca9450 0-0025: pca9450bc probed.                                                                    
+at24 0-0051: supply vcc not found, using dummy regulator                                                 
+at24 0-0051: 4096 byte 24c32 EEPROM, writable, 32 bytes/write                                            
+random: fast init done                                                                                   
+rtc-rv3028 0-0052: registered as rtc0                                                                    
+rtc-rv3028 0-0052: setting system clock to 2024-02-27T10:54:19 UTC (1709031259)                          
+at24 0-0059: supply vcc not found, using dummy regulator                                                 
+at24 0-0059: 32 byte 24c32 EEPROM, writable, 32 bytes/write                                              
+i2c i2c-0: IMX I2C adapter registered                                                                    
+at24 1-0051: supply vcc not found, using dummy regulator                                                 
+leds-pca953x 1-0062: setting platform data                                                               
+i2c i2c-1: IMX I2C adapter registered                                                                    
+at24 3-005f: supply vcc not found, using dummy regulator                                                 
+at24 3-0057: supply vcc not found, using dummy regulator                                                 
+tlv320aic3x-codec 3-0018: Failed to init class D: -6                                                     
+i2c i2c-3: IMX I2C adapter registered                                                                    
+imx8mq-usb-phy 381f0040.usb-phy: supply vbus not found, using dummy regulator                            
+imx8mq-usb-phy 382f0040.usb-phy: supply vbus not found, using dummy regulator                            
+samsung-hdmi-phy 32fdff00.hdmiphy: failed to get phy apb clk: -517                                       
+pwm-backlight backlight0: supply power not found, using dummy regulator                                  
+imx6q-pcie 33800000.pcie: supply epdev_on not found, using dummy regulator                               
+imx6q-pcie 33800000.pcie: PLL REF_CLK is used!.                                                          
+imx6q-pcie 33800000.pcie: PCIe PHY PLL clock is locked.                                                  
+SoC: i.MX8MP revision 1.1                                                                                
+imx-cpufreq-dt imx-cpufreq-dt: cpu speed grade 7 mkt segment 2 supported-hw 0x80 0x4                     
+imx-lcdifv3 32fc6000.lcd-controller: No irq get, ret=-517                                                
+panel-simple panel0: supply power not found, using dummy regulator                                       
+panel-simple panel1: supply power not found, using dummy regulator                                       
+imx-dwmac 30bf0000.ethernet: IRQ eth_lpi not found                                                       
+imx-dwmac 30bf0000.ethernet: no reset control found                                                      
+imx-dwmac 30bf0000.ethernet: User ID: 0x10, Synopsys ID: 0x51                                            
+imx6q-pcie 33800000.pcie: PCIe PLL locked after 0 us.                                                    
+imx-dwmac 30bf0000.ethernet:     DWMAC4/5                                                                
+imx6q-pcie 33800000.pcie: host bridge /soc@0/pcie@33800000 ranges:                                       
+imx-dwmac 30bf0000.ethernet: DMA HW capability register supported                                        
+imx6q-pcie 33800000.pcie:   No bus range found for /soc@0/pcie@33800000, using [bus 00-ff]               
+imx-dwmac 30bf0000.ethernet: RX Checksum Offload Engine supported                                        
+imx6q-pcie 33800000.pcie:       IO 0x001ff80000..0x001ff8ffff -> 0x0000000000                            
+imx-dwmac 30bf0000.ethernet: TX Checksum insertion supported                                             
+imx6q-pcie 33800000.pcie:      MEM 0x0018000000..0x001fefffff -> 0x0018000000                            
+imx-dwmac 30bf0000.ethernet: Wake-Up On Lan supported                                                    
+imx-dwmac 30bf0000.ethernet: Enable RX Mitigation via HW Watchdog Timer                                  
+imx6q-pcie 33800000.pcie: invalid resource                                                               
+imx-dwmac 30bf0000.ethernet: Enabled Flow TC (entries=8)                                                 
+imx-dwmac 30bf0000.ethernet: Enabling HW TC (entries=256, max_off=256)                                   
+imx-dwmac 30bf0000.ethernet: Using 34 bits DMA width                                                     
+libphy: stmmac: probed                                                                                   
+mdio_bus stmmac-1: MDIO device at address 1 is missing.                                                  
+xhci-hcd xhci-hcd.1.auto: xHCI Host Controller                                                           
+xhci-hcd xhci-hcd.1.auto: new USB bus registered, assigned bus number 1                                  
+xhci-hcd xhci-hcd.1.auto: hcc params 0x0220fe6c hci version 0x110 quirks 0x0000002021810010              
+xhci-hcd xhci-hcd.1.auto: irq 75, io mem 0x38100000                                                      
+xhci-hcd xhci-hcd.1.auto: xHCI Host Controller                                                           
+xhci-hcd xhci-hcd.1.auto: new USB bus registered, assigned bus number 2                                  
+xhci-hcd xhci-hcd.1.auto: Host supports USB 3.0 SuperSpeed                                               
+hub 1-0:1.0: USB hub found                                                                               
+hub 1-0:1.0: 1 port detected                                                                             
+usb usb2: We don't know the algorithms for LPM for this host, disabling LPM.                             
+hub 2-0:1.0: USB hub found                                                                               
+hub 2-0:1.0: 1 port detected                                                                             
+xhci-hcd xhci-hcd.2.auto: xHCI Host Controller                                                           
+xhci-hcd xhci-hcd.2.auto: new USB bus registered, assigned bus number 3                                  
+xhci-hcd xhci-hcd.2.auto: hcc params 0x0220fe6c hci version 0x110 quirks 0x0000002021810010              
+xhci-hcd xhci-hcd.2.auto: irq 76, io mem 0x38200000                                                      
+xhci-hcd xhci-hcd.2.auto: xHCI Host Controller                                                           
+xhci-hcd xhci-hcd.2.auto: new USB bus registered, assigned bus number 4                                  
+xhci-hcd xhci-hcd.2.auto: Host supports USB 3.0 SuperSpeed                                               
+hub 3-0:1.0: USB hub found                                                                               
+hub 3-0:1.0: 1 port detected                                                                             
+usb usb4: We don't know the algorithms for LPM for this host, disabling LPM.                             
+hub 4-0:1.0: USB hub found                                                                               
+hub 4-0:1.0: 1 port detected                                                                             
+sdhci-esdhc-imx 30b50000.mmc: voltage-ranges unspecified                                                 
+caam 30900000.crypto: device ID = 0x0a16040100000100 (Era 9)                                             
+sdhci-esdhc-imx 30b50000.mmc: Got CD GPIO                                                                
+caam 30900000.crypto: job rings = 1, qi = 0                                                              
+mmc1: SDHCI controller on 30b50000.mmc [30b50000.mmc] using ADMA                                         
+caam algorithms registered in /proc/crypto                                                               
+caam 30900000.crypto: caam pkc algorithms registered in /proc/crypto                                     
+caam 30900000.crypto: registering rng-caam                                                               
+Device caam-keygen registered                                                                            
+fsl-aud2htx 30cb0000.aud2htx: failed to pcm register                                                     
+imx-cdnhdmi sound-hdmi: snd_soc_register_card failed (-517)                                              
+imx-drm display-subsystem: bound imx-lcdifv3-crtc.0 (ops lcdifv3_crtc_ops)                               
+imx-drm display-subsystem: bound imx-lcdifv3-crtc.1 (ops lcdifv3_crtc_ops)                               
+imx-drm display-subsystem: bound imx-lcdifv3-crtc.2 (ops lcdifv3_crtc_ops)                               
+random: crng init done                                                                                   
+imx_sec_dsim_drv 32e60000.mipi_dsi: version number is 0x1060200                                          
+imx_sec_dsim_drv 32e60000.mipi_dsi: [drm] *ERROR* modalias failure on /soc@0/bus@32c00000/mipi_dsi@32e600
+00/port@1                                                                                                               
+imx_sec_dsim_drv 32e60000.mipi_dsi: Failed to attach bridge: 32e60000.mipi_dsi                           
+imx_sec_dsim_drv 32e60000.mipi_dsi: failed to bind sec dsim bridge: -517                                 
+mmc1: host does not support reading read-only switch, assuming write-enable                              
+fsl-aud2htx 30cb0000.aud2htx: failed to pcm register                                                     
+imx-cdnhdmi sound-hdmi: snd_soc_register_card failed (-517)                                              
+imx-drm display-subsystem: bound imx-lcdifv3-crtc.0 (ops lcdifv3_crtc_ops)                               
+imx-drm display-subsystem: bound imx-lcdifv3-crtc.1 (ops lcdifv3_crtc_ops)                               
+imx-drm display-subsystem: bound imx-lcdifv3-crtc.2 (ops lcdifv3_crtc_ops)                               
+imx_sec_dsim_drv 32e60000.mipi_dsi: Unbalanced imx_sec_dsim_runtime_resume!                              
+imx_sec_dsim_drv 32e60000.mipi_dsi: version number is 0x1060200                                          
+imx_sec_dsim_drv 32e60000.mipi_dsi: [drm] *ERROR* modalias failure on /soc@0/bus@32c00000/mipi_dsi@32e600
+00/port@1                                                                                                               
+imx_sec_dsim_drv 32e60000.mipi_dsi: Failed to attach bridge: 32e60000.mipi_dsi                           
+imx_sec_dsim_drv 32e60000.mipi_dsi: failed to bind sec dsim bridge: -517                                 
+fsl-aud2htx 30cb0000.aud2htx: failed to pcm register                                                     
+imx-cdnhdmi sound-hdmi: snd_soc_register_card failed (-517)                                              
+imx-drm display-subsystem: bound imx-lcdifv3-crtc.0 (ops lcdifv3_crtc_ops)                               
+imx-drm display-subsystem: bound imx-lcdifv3-crtc.1 (ops lcdifv3_crtc_ops)                               
+imx-drm display-subsystem: bound imx-lcdifv3-crtc.2 (ops lcdifv3_crtc_ops)                               
+imx_sec_dsim_drv 32e60000.mipi_dsi: Unbalanced imx_sec_dsim_runtime_resume!                              
+imx_sec_dsim_drv 32e60000.mipi_dsi: version number is 0x1060200                                          
+imx_sec_dsim_drv 32e60000.mipi_dsi: [drm] *ERROR* modalias failure on /soc@0/bus@32c00000/mipi_dsi@32e600
+00/port@1                                                                                                               
+imx_sec_dsim_drv 32e60000.mipi_dsi: Failed to attach bridge: 32e60000.mipi_dsi                           
+imx_sec_dsim_drv 32e60000.mipi_dsi: failed to bind sec dsim bridge: -517                                 
+cfg80211: Loading compiled-in X.509 certificates for regulatory database                                 
+cfg80211: Loaded X.509 cert 'sforshee: 00b28ddf47aef9cea7'                                               
+platform regulatory.0: Direct firmware load for regulatory.db failed with error -2                       
+platform regulatory.0: Falling back to sysfs fallback for: regulatory.db                                 
+ALSA device list:                                                                                        
+mmc1: new ultra high speed SDR104 SDHC card at address aaaa                                              
+  No soundcards found.                                                                                   
+mmcblk1: mmc1:aaaa SC16G 14.8 GiB                                                                        
+ mmcblk1: p1 p2                                                                                          
+fsl-aud2htx 30cb0000.aud2htx: failed to pcm register                                                     
+imx-cdnhdmi sound-hdmi: snd_soc_register_card failed (-517)                                              
+imx-drm display-subsystem: bound imx-lcdifv3-crtc.0 (ops lcdifv3_crtc_ops)                               
+imx-drm display-subsystem: bound imx-lcdifv3-crtc.1 (ops lcdifv3_crtc_ops)                               
+imx-drm display-subsystem: bound imx-lcdifv3-crtc.2 (ops lcdifv3_crtc_ops)                               
+imx_sec_dsim_drv 32e60000.mipi_dsi: Unbalanced imx_sec_dsim_runtime_resume!                              
+imx_sec_dsim_drv 32e60000.mipi_dsi: version number is 0x1060200                                          
+imx_sec_dsim_drv 32e60000.mipi_dsi: [drm] *ERROR* modalias failure on /soc@0/bus@32c00000/mipi_dsi@32e600
+00/port@1                                                                                                               
+imx_sec_dsim_drv 32e60000.mipi_dsi: Failed to attach bridge: 32e60000.mipi_dsi                           
+imx_sec_dsim_drv 32e60000.mipi_dsi: failed to bind sec dsim bridge: -517                                 
+imx6q-pcie 33800000.pcie: Phy link never came up                                                         
+imx6q-pcie 33800000.pcie: failed to initialize host                                                      
+imx6q-pcie 33800000.pcie: unable to add pcie port.                                                       
+EXT4-fs (mmcblk1p2): mounted filesystem with ordered data mode. Opts: (null)                             
+VFS: Mounted root (ext4 filesystem) on device 179:98.                                                    
+devtmpfs: mounted                                                                                        
+Freeing unused kernel memory: 3072K                                                                      
+Run /sbin/init as init process                                                                           
+systemd[1]: systemd 247 running in system mode. (+PAM -AUDIT -SELINUX -IMA -APPARMOR -SMACK -SYSVINIT -UT
+MP -LIBCRYPTSETUP -GCRYPT -GNUTLS -ACL -XZ +LZ4 -ZSTD -SECCOMP +BLKID -ELFUTILS +KMOD -IDN2 -IDN -PCRE2 default-hierarch
+y=hybrid)                                                                                                               
+systemd[1]: Detected architecture arm64.                                                                 
+                                                                                                                        
+Welcome to The ampliPHY Distribution BSP-Yocto-NXP-i.MX8MP-PD22.1.1!                                                    
+                                                                                                                        
+systemd[1]: Set hostname to <phyboard-pollux-imx8mp-3>.                                                  
+systemd[1]: Using hardware watchdog 'imx2+ watchdog', version 0, device /dev/watchdog                    
+systemd[1]: Set hardware watchdog to 1min.                                                               
+systemd[1]: Queued start job for default target Graphical Interface.                                     
+systemd[1]: Created slice system-getty.slice.                                                            
+Created slice system-getty.slice.                                                                              
+systemd[1]: Created slice system-modprobe.slice.                                                         
+Created slice system-modprobe.slice.                                                                           
+systemd[1]: Created slice system-serial\x2dgetty.slice.                                                  
+Created slice system-serial\x2dgetty.slice.                                                                    
+systemd[1]: Created slice User and Session Slice.                                                        
+Created slice User and Session Slice.                                                                          
+systemd[1]: Started Dispatch Password Requests to Console Directory Watch.                               
+Started Dispatch Password …ts to Console Directory Watch.                                                      
+systemd[1]: Started Forward Password Requests to Wall Directory Watch.                                   
+Started Forward Password R…uests to Wall Directory Watch.                                                      
+systemd[1]: Reached target Paths.                                                                        
+Reached target Paths.                                                                                          
+systemd[1]: Reached target Remote File Systems.                                                          
+Reached target Remote File Systems.                                                                            
+systemd[1]: Reached target Slices.                                                                       
+Reached target Slices.                                                                                         
+systemd[1]: Reached target Swap.                                                                         
+Reached target Swap.                                                                                           
+systemd[1]: Listening on RPCbind Server Activation Socket.                                               
+Listening on RPCbind Server Activation Socket.                                                                 
+systemd[1]: Reached target RPC Port Mapper.                                                              
+Reached target RPC Port Mapper.                                                                                
+systemd[1]: Condition check resulted in Journal Audit Socket being skipped.                              
+systemd[1]: Listening on Journal Socket (/dev/log).                                                      
+Listening on Journal Socket (/dev/log).                                                                        
+systemd[1]: Listening on Journal Socket.                                                                 
+Listening on Journal Socket.                                                                                   
+systemd[1]: Listening on Network Service Netlink Socket.                                                 
+Listening on Network Service Netlink Socket.                                                                   
+systemd[1]: Listening on udev Control Socket.                                                            
+Listening on udev Control Socket.                                                                              
+systemd[1]: Listening on udev Kernel Socket.                                                             
+Listening on udev Kernel Socket.                                                                               
+systemd[1]: Mounting Huge Pages File System...                                                           
+         Mounting Huge Pages File System...                                                                             
+systemd[1]: Mounting POSIX Message Queue File System...                                                  
+         Mounting POSIX Message Queue File System...                                                                    
+systemd[1]: Mounting Kernel Debug File System...                                                         
+         Mounting Kernel Debug File System...                                                                           
+systemd[1]: Condition check resulted in Kernel Trace File System being skipped.                          
+systemd[1]: Mounting Temporary Directory (/tmp)...                                                       
+         Mounting Temporary Directory (/tmp)...                                                                         
+systemd[1]: Starting Create list of static device nodes for the current kernel...                        
+         Starting Create list of st…odes for the current kernel...                                                      
+systemd[1]: Starting Load Kernel Module configfs...                                                      
+         Starting Load Kernel Module configfs...                                                                        
+systemd[1]: Starting Load Kernel Module drm...                                                           
+         Starting Load Kernel Module drm...                                                                             
+systemd[1]: Starting Load Kernel Module fuse...                                                          
+         Starting Load Kernel Module fuse...                                                                            
+fuse: init (API version 7.32)                                                                            
+systemd[1]: Starting RPC Bind...                                                                         
+         Starting RPC Bind...                                                                                           
+systemd[1]: Condition check resulted in File System Check on Root Device being skipped.                  
+systemd[1]: Starting Journal Service...                                                                  
+         Starting Journal Service...                                                                                    
+systemd[1]: Condition check resulted in Load Kernel Modules being skipped.                               
+systemd[1]: Starting Remount Root and Kernel File Systems...                                             
+         Starting Remount Root and Kernel File Systems...                                                               
+EXT4-fs (mmcblk1p2): re-mounted. Opts: (null)                                                            
+systemd[1]: Starting Apply Kernel Variables...                                                           
+         Starting Apply Kernel Variables...                                                                             
+systemd[1]: Starting Coldplug All udev Devices...                                                        
+         Starting Coldplug All udev Devices...                                                                          
+systemd[1]: Started RPC Bind.                                                                            
+Started RPC Bind.                                                                                              
+systemd[1]: Started Journal Service.                                                                     
+Started Journal Service.                                                                                       
+Mounted Huge Pages File System.                                                                                
+Mounted POSIX Message Queue File System.                                                                       
+Mounted Kernel Debug File System.                                                                              
+Mounted Temporary Directory (/tmp).                                                                            
+Finished Create list of st… nodes for the current kernel.                                                      
+Finished Load Kernel Module configfs.                                                                          
+Finished Load Kernel Module drm.                                                                               
+Finished Load Kernel Module fuse.                                                                              
+Finished Remount Root and Kernel File Systems.                                                                 
+Finished Apply Kernel Variables.                                                                               
+         Mounting FUSE Control File System...                                                                           
+         Mounting Kernel Configuration File System...                                                                   
+         Starting Flush Journal to Persistent Storage...                                                                
+systemd-journald[335]: Received client request to flush runtime journal.                                 
+         Starting Create Static Device Nodes in /dev...                                                                 
+Mounted FUSE Control File System.                                                                              
+Mounted Kernel Configuration File System.                                                                      
+Finished Flush Journal to Persistent Storage.                                                                  
+Finished Create Static Device Nodes in /dev.                                                                   
+Reached target Local File Systems (Pre).                                                                       
+         Mounting /var/volatile...                                                                                      
+         Starting Rule-based Manage…for Device Events and Files...                                                      
+Finished Coldplug All udev Devices.                                                                            
+Mounted /var/volatile.                                                                                         
+Started Rule-based Manager for Device Events and Files.                                                        
+         Starting Start Psplash Boot Screen...                                                                          
+         Starting Network Service...                                                                                    
+         Starting Wait for udev To …plete Device Initialization...                                                      
+Started Start Psplash Boot Screen.                                                                             
+Started Start psplash-syst…progress communication helper.                                                      
+Started Network Service.                                                                                       
+fsl-aud2htx 30cb0000.aud2htx: failed to pcm register                                                     
+imx-cdnhdmi sound-hdmi: snd_soc_register_card failed (-517)                                              
+imx-drm display-subsystem: bound imx-lcdifv3-crtc.0 (ops lcdifv3_crtc_ops)                               
+imx-drm display-subsystem: bound imx-lcdifv3-crtc.1 (ops lcdifv3_crtc_ops)                               
+imx-drm display-subsystem: bound imx-lcdifv3-crtc.2 (ops lcdifv3_crtc_ops)                               
+imx_sec_dsim_drv 32e60000.mipi_dsi: Unbalanced imx_sec_dsim_runtime_resume!                              
+imx_sec_dsim_drv 32e60000.mipi_dsi: version number is 0x1060200                                          
+imx_sec_dsim_drv 32e60000.mipi_dsi: [drm] *ERROR* modalias failure on /soc@0/bus@32c00000/mipi_dsi@32e600
+00/port@1                                                                                                               
+imx_sec_dsim_drv 32e60000.mipi_dsi: Failed to attach bridge: 32e60000.mipi_dsi                           
+imx_sec_dsim_drv 32e60000.mipi_dsi: failed to bind sec dsim bridge: -517                                 
+imx-dwmac 30bf0000.ethernet eth1: no phy at addr -1                                                      
+imx-dwmac 30bf0000.ethernet eth1: stmmac_open: Cannot attach to PHY (error: -19)                         
+fsl-aud2htx 30cb0000.aud2htx: failed to pcm register                                                     
+imx-cdnhdmi sound-hdmi: snd_soc_register_card failed (-517)                                              
+TI DP83867 30be0000.ethernet-1:00: attached PHY driver [TI DP83867] (mii_bus:phy_addr=30be0000.ethernet-1
+:00, irq=POLL)                                                                                                          
+imx-drm display-subsystem: bound imx-lcdifv3-crtc.0 (ops lcdifv3_crtc_ops)                               
+imx-drm display-subsystem: bound imx-lcdifv3-crtc.1 (ops lcdifv3_crtc_ops)                               
+imx-drm display-subsystem: bound imx-lcdifv3-crtc.2 (ops lcdifv3_crtc_ops)                               
+imx_sec_dsim_drv 32e60000.mipi_dsi: Unbalanced imx_sec_dsim_runtime_resume!                              
+imx-sdma 30bd0000.dma-controller: firmware found.                                                        
+imx-sdma 30bd0000.dma-controller: loaded firmware 4.6                                                    
+imx_sec_dsim_drv 32e60000.mipi_dsi: version number is 0x1060200                                          
+imx_sec_dsim_drv 32e60000.mipi_dsi: [drm] *ERROR* modalias failure on /soc@0/bus@32c00000/mipi_dsi@32e600
+00/port@1                                                                                                               
+imx_sec_dsim_drv 32e60000.mipi_dsi: Failed to attach bridge: 32e60000.mipi_dsi                           
+imx_sec_dsim_drv 32e60000.mipi_dsi: failed to bind sec dsim bridge: -517                                 
+fsl-aud2htx 30cb0000.aud2htx: failed to pcm register                                                     
+Found device /dev/disk/by-uuid/D28B-D2D2.                                                                      
+imx-cdnhdmi sound-hdmi: snd_soc_register_card failed (-517)                                              
+imx-sdma 30e10000.dma-controller: firmware found.                                                        
+imx-drm display-subsystem: bound imx-lcdifv3-crtc.0 (ops lcdifv3_crtc_ops)                               
+imx-drm display-subsystem: bound imx-lcdifv3-crtc.1 (ops lcdifv3_crtc_ops)                               
+imx-drm display-subsystem: bound imx-lcdifv3-crtc.2 (ops lcdifv3_crtc_ops)                               
+imx_sec_dsim_drv 32e60000.mipi_dsi: Unbalanced imx_sec_dsim_runtime_resume!                              
+imx_sec_dsim_drv 32e60000.mipi_dsi: version number is 0x1060200                                          
+imx_sec_dsim_drv 32e60000.mipi_dsi: [drm] *ERROR* modalias failure on /soc@0/bus@32c00000/mipi_dsi@32e600
+00/port@1                                                                                                               
+imx_sec_dsim_drv 32e60000.mipi_dsi: Failed to attach bridge: 32e60000.mipi_dsi                           
+imx_sec_dsim_drv 32e60000.mipi_dsi: failed to bind sec dsim bridge: -517                                 
+imx-cdnhdmi sound-hdmi: snd_soc_register_card failed (-517)                                              
+imx-drm display-subsystem: bound imx-lcdifv3-crtc.0 (ops lcdifv3_crtc_ops)                               
+imx-drm display-subsystem: bound imx-lcdifv3-crtc.1 (ops lcdifv3_crtc_ops)                               
+imx-drm display-subsystem: bound imx-lcdifv3-crtc.2 (ops lcdifv3_crtc_ops)                               
+imx_sec_dsim_drv 32e60000.mipi_dsi: Unbalanced imx_sec_dsim_runtime_resume!                              
+imx_sec_dsim_drv 32e60000.mipi_dsi: version number is 0x1060200                                          
+imx_sec_dsim_drv 32e60000.mipi_dsi: [drm] *ERROR* modalias failure on /soc@0/bus@32c00000/mipi_dsi@32e600
+00/port@1                                                                                                               
+imx_sec_dsim_drv 32e60000.mipi_dsi: Failed to attach bridge: 32e60000.mipi_dsi                           
+imx_sec_dsim_drv 32e60000.mipi_dsi: failed to bind sec dsim bridge: -517                                 
+IPv6: ADDRCONF(NETDEV_CHANGE): can1: link becomes ready                                                  
+Listening on Load/Save RF …itch S[    6.329236] DSI init                                                       
+tatus /dev/rfkill Watch.                                                                                                
+imx-cdnhdmi sound-hdmi: snd_soc_register_card failed (-517)                                              
+DSI init err = 0                                                                                         
+imx-drm display-subsystem: bound imx-lcdifv3-crtc.0 (ops lcdifv3_crtc_ops)                               
+imx-drm display-subsystem: bound imx-lcdifv3-crtc.1 (ops lcdifv3_crtc_ops)                               
+imx-drm display-subsystem: bound imx-lcdifv3-crtc.2 (ops lcdifv3_crtc_ops)                               
+imx_sec_dsim_drv 32e60000.mipi_dsi: Unbalanced imx_sec_dsim_runtime_resume!                              
+imx_sec_dsim_drv 32e60000.mipi_dsi: version number is 0x1060200                                          
+DSI probe                                                                                                
+DSI probe2, err=0                                                                                        
+imx_sec_dsim_drv 32e60000.mipi_dsi: [drm] *ERROR* modalias failure on /soc@0/bus@32c00000/mipi_dsi@32e600
+00/port@1                                                                                                               
+FAT-fs (mmcblk1p1): Volume was not properly unmounted. Some data may be corrupt. Please run fsck.        
+imx-drm display-subsystem: bound 32e60000.mipi_dsi (ops imx_sec_dsim_ops)                                
+         Mounting /boot   6.418200] imx-drm display-subsystem: bound 32c00000.bus:ldb@32ec005c (ops imx8mp_ldb_ops)     
+dwhdmi-imx 32fd8000.hdmi: Detected HDMI TX controller v2.13a with HDCP (samsung_dw_hdmi_phy2)            
+dwhdmi-imx 32fd8000.hdmi: registered DesignWare HDMI I2C bus driver                                      
+imx-drm display-subsystem: bound 32fd8000.hdmi (ops dw_hdmi_imx_ops)                                     
+[drm] Initialized imx-drm 1.0.0 20120507 for display-subsystem on minor 1                                
+DSI get modes                                                                                            
+DSI get mode = 1                                                                                         
+Mounted /boot.                                                                                                 
+DSI set mode 800x600                                                                                     
+DSI enabled 0                                                                                            
+DSI panel enable                                                                                         
+Console: switching to colour frame buffer device 100x37                                                  
+imx-drm display-subsystem: [drm] fb0: imx-drmdrmfb frame buffer device                                   
+         Starting Start Psplash Boot Screen...                                                                          
+Reached targe[    6.578261] input: audio-hdmi HDMI Jack as /devices/platform/sound-hdmi/sound/card1/input1     
+t Local File Systems.                                                                                                   
+         Starting Create Volatile Files and Directories...                                                              
+Started Start Psplash Boot Screen.                                                                             
+Finished Create Volatile Files and Directories.                                                                
+Started Start psplash-syst…progress communication helper.                                                      
+         Starting Network Name Resolution...                                                                            
+         Starting Network Time Synchronization...                                                                       
+Started Network Name Resolution.                                                                               
+Reached target Network.                                                                                        
+Reached target Host and Network Name Lookups.                                                                  
+Started NFS status monitor for NFSv2/3 locking..                                                               
+Started Network Time Synchronization.                                                                          
+Reached target System Time Set.                                                                                
+Reached target System Time Synchronized.                                                                       
+IPv6: ADDRCONF(NETDEV_CHANGE): can0: link becomes ready                                                  
+tpm tpm0: tpm_try_transmit: send(): error -62                                                            
+tpm_tis_spi spi1.0: 1.2 TPM (device-id 0x1D, rev-id 38)                                                  
+ start job is running for Wait for…vice Initialization (5s / 3min 1s)
+tpm tpm0: tpm_try_transmit: send(): error -62                                                            
+tpm tpm0: A TPM error (-62) occurred attempting to determine the timeouts                                
+Finished Wait for udev To Complete Device Initialization.
+Reached target System Initialization.                                                                          
+Started Daily Cleanup of Temporary Directories.                                                                
+Reached target Timers.                                                                                         
+Listening on D-Bus System Message Bus Socket.                                                                  
+Listening on PC/SC Smart Card Daemon Activation Socket.                                                        
+         Starting sshd.socket.                                                                                          
+         Starting Weston socket.                                                                                        
+Listening on sshd.socket.                                                                                      
+Listening on Weston socket.                                                                                    
+Reached target Sockets.                                                                                        
+Reached target Basic System.                                                                                   
+         Starting Save/Restore Sound Card State...                                                                      
+Started D-Bus System Message Bus.                                                                              
+Started Start fan control, if configured.                                                                      
+Started Linux Firmware Loader Daemon.                                                                          
+Started Configuration for i.MX GPU (Former rc_gpu.S).                                                          
+Started Updates psplash to basic.                                                                              
+Started Update psplash to network.                                                                             
+         Starting Terminate Psplash Boot Screen...                                                                      
+         Starting User Login Management...                                                                              
+         Starting Permit User Sessions...                                                                               
+Started TEE Supplicant.                                                                                        
+         Starting OpenSSH Key Generation...                                                                             
+Finished Save/Restore Sound Card State.                                                                        
+Finished Terminate Psplash Boot Screen.                                                                        
+Finished Permit User Sessions.                                                                                 
+Finished OpenSSH Key Generation.                                                                               
+Reached target Sound Card.                                                                                     
+Started Getty on tty1.                                                                                         
+Started Serial Getty on ttymxc0.                                                                               
+Reached target Login Prompts.                                                                                  
+         Starting Weston, a Wayland…ositor, as a system service...                                                      
+Started User Login Management.                                                                                 
+Created slice User Slice of UID 0.                                                                             
+         Starting User Runtime Directory /run/user/0...                                                                 
+Finished User Runtime Directory /run/user/0.                                                                   
+         Starting User Manager for UID 0...                                                                             
+Started User Manager for UID 0.                                                                                
+Started Session c1 of user root.                                                                               
+DSI get modes                                                                                            
+DSI get mode = 1                                                                                         
+Started Weston, a Wayland …mpositor, as a system service.                                                      
+Started Autostart Qt LED demo.                                                                                 
+Reached target Multi-User System.                                                                              
+Reached target Graphical Interface.                                                                            
+DSI set mode 800x600                                                                                     
+DSI enabled 0                                                                                            
+DSI panel enable                                                                                         
+                                                                                                                        
