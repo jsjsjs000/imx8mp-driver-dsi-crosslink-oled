@@ -1,0 +1,115 @@
+git clone --depth 1 -b v5.15.71_2.2.2-phy git://git.phytec.de/linux-imx
+mv linux-imx linux-imx-v5.15.71_2.2.2-phy
+# v5.15.71_2.2.2-phy5 = -phy  # Yocto PD22.1.1
+
+cd linux-imx-v5.15.71_2.2.2-phy/
+pd23.1.0
+
+# fix Kernel version add -dirty or 13 digit number
+touch .scmversion
+
+# first compile Kernel
+make -j $(nproc) LOCALVERSION="-bsp-yocto-nxp-i.mx8mp-pd23.1.0" EXTRAVERSION=""
+strings arch/arm64/boot/Image | grep 'Linux version'
+
+# i.MX
+echo "fdt_file=imx8mp-phyboard-pollux-rdk.dtb" >> /boot/bootenv.txt
+reboot
+
+# compile Kernel
+make -j $(nproc) LOCALVERSION="-bsp-yocto-nxp-i.mx8mp-pd23.1.0" EXTRAVERSION=""
+#> I.MX 8M Plus DSI - Crosslink - OLED driver (IMX8MP_DSI_CROSSLINK_OLED) [M/n/y/?] (NEW) - Enter
+
+ssh root@192.168.3.11 'mkdir -p /lib/modules/5.15.71-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/'
+scp arch/arm64/boot/Image root@192.168.3.11:/boot/
+scp drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/imx8mp-dsi-crosslink-oled.ko root@192.168.3.11:/lib/modules/5.15.71-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/
+scp arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dtb root@192.168.3.11:/boot
+
+mkdir -p /media/$USER/root/lib/modules/5.15.71-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/
+cp arch/arm64/boot/Image /media/$USER/boot/
+cp arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dtb /media/$USER/boot/
+sudo cp drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/imx8mp-dsi-crosslink-oled.ko /media/$USER/root/lib/modules/5.15.71-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/
+sync; umount /media/$USER/boot; umount /media/$USER/root
+
+
+.config - parametr sam się doda
+był błąd =y -> =m
+
+## remove -dirty from Linux version (-g84fcf7ad9d80 still exists)
+#git add .
+#git commit -m "js-feature"
+
+# remove -g84fcf7ad9d80 from Linux version
+mv .git .git-
+mv .git- .git
+
+make -j $(nproc) LOCALVERSION="-bsp-yocto-nxp-i.mx8mp-pd23.1.0" EXTRAVERSION=""
+strings arch/arm64/boot/Image | grep 'Linux version'
+cat include/config/kernel.release
+cat include/generated/utsrelease.h
+
+
+
+
+
+git diff HEAD > 0000-kernel-dsi-pd22.1.1.patch
+#git diff > 0001-patch1.patch
+#git diff -- cached > 0001-patch1.patch  # changes not in index
+
+git reset --hard
+git apply 0000-kernel-dsi-pd22.1.1.patch
+
+
+
+sysctl kernel.printk=7
+insmod /lib/modules/5.15.71-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/imx8mp-dsi-crosslink-oled.ko
+rmmod imx8mp-dsi-crosslink-oled.ko
+
+
+dmesg | grep dsi_oled_driver
+dmesg | grep dsi
+
+# journalctl -o short-precise -k -b -1  # last boot - not works
+# /run/log/journal
+
+# backup last boot log to /root/journal folder
+echo "cp -r /run/log/journal/ /root/" >> ~/.bashrc
+
+
+alias co='make -j $(nproc) LOCALVERSION="-bsp-yocto-nxp-i.mx8mp-pd23.1.0" EXTRAVERSION=""'
+alias up='scp arch/arm64/boot/Image root@192.168.3.11:/boot/; scp drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/imx8mp-dsi-crosslink-oled.ko root@192.168.3.11:/lib/modules/5.15.71-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/; scp arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dtb root@192.168.3.11:/boot'
+alias cp='cp arch/arm64/boot/Image /media/$USER/boot/; cp arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dtb /media/$USER/boot/; sudo cp drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/imx8mp-dsi-crosslink-oled.ko /media/$USER/root/lib/modules/5.15.71-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/'
+alias re='ssh root@192.168.3.11 reboot'
+
+pr_info("dsi ---------------- suspend");
+
+/home/jarsulk/linux-imx-v5.15.71_2.2.2-phy/drivers/gpu/drm/imx/sec_mipi_dsim-imx.c
+/home/jarsulk/linux-imx-v5.15.71_2.2.2-phy/drivers/gpu/drm/bridge/sec-dsim.c
+/home/jarsulk/linux-imx-v5.15.71_2.2.2-phy/drivers/gpu/drm/drm_bridge.c
+
+------------- nie działa - startuje Linux - nie ładuje drivera
+&lcdif1 {
+	status = "okay";
+};
+
+&mipi_dsi {
+	status = "okay";
+
+	panel {
+		compatible = "pco,dsi_crosslink_oled_svga060";
+		dsi-lanes = <4>;
+		video-mode = <2>;
+		status = "okay";
+	};
+};
+
+------------- nie działa - startuje Linux - ładuje driver
+&lcdif1 {
+	status = "okay";
+};
+
+&mipi_dsi {
+	status = "okay";
+	compatible = "fsl,imx8mp-mipi-dsim", "pco,dsi_crosslink_oled_svga060";
+};
+
