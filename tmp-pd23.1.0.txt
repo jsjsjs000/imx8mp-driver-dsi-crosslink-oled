@@ -87,6 +87,8 @@ pr_info("dsi ---------------- suspend");
 /home/jarsulk/linux-imx-v5.15.71_2.2.2-phy/drivers/gpu/drm/bridge/sec-dsim.c
 /home/jarsulk/linux-imx-v5.15.71_2.2.2-phy/drivers/gpu/drm/drm_bridge.c
 
+https://git.phytec.de/linux-imx/tree/drivers/gpu/drm/imx/sec_mipi_dsim-imx.c?h=v5.15.71_2.2.2-phy5
+
 ------------- nie działa - startuje Linux - nie ładuje drivera
 &lcdif1 {
 	status = "okay";
