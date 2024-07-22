@@ -1,7 +1,7 @@
 # 1. Kernel standalone
 
 	# set variables
-kernel_dir=~/linux-imx-phytec-v5.15.71_2.2.2/drivers/gpu/drm/imx/imx8mp-dsi-crosslink-oled/
+kernel_dir=~/linux-imx-phytec-v5.15.71_2.2.2/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/
 jarsulk_dir=~/jarsulk-pco/projects/LT-22/Programs/A53/kernel_space/imx8mp-dsi-crosslink-oled/
 
 	# copy kernel module to ~/jarsulk-pco repository
@@ -78,18 +78,18 @@ nano arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk-rpmsg-dsi.dts
 };
 # ---------------------------------------------------------
 
-nano drivers/gpu/drm/imx/Makefile
+nano drivers/gpu/drm/bridge/Makefile
 # ---------------------------------------------------------
 obj-$(CONFIG_IMX8MP_DSI_CROSSLINK_OLED) += imx8mp-dsi-crosslink-oled/
 # ---------------------------------------------------------
 
-nano drivers/gpu/drm/imx/imx8mp-dsi-crosslink-oled/Makefile
+nano drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/Makefile
 # ---------------------------------------------------------
 imx8mp-dsi-crosslink-oled-objs := imx8mp-dsi-crosslink-oled-main.o imx8mp-dsi-crosslink-oled-i2c.o
 obj-$(CONFIG_IMX8MP_DSI_CROSSLINK_OLED) += imx8mp-dsi-crosslink-oled.o
 # ---------------------------------------------------------
 
-nano drivers/gpu/drm/imx/Kconfig
+nano drivers/gpu/drm/bridge/Kconfig
 # ---------------------------------------------------------
 config IMX8MP_DSI_CROSSLINK_OLED
 	tristate "I.MX 8M Plus DSI - Crosslink - OLED driver"
@@ -109,20 +109,21 @@ make -j16
 	# copy Kernel to SD card
 cp arch/arm64/boot/Image /media/$USER/boot/
 cp arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk-rpmsg-dsi.dtb /media/$USER/boot/
-sudo mkdir -p /media/$USER/root/lib/modules/5.10.72-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/imx/
-sudo cp drivers/gpu/drm/imx/imx8mp-dsi-crosslink-oled/imx8mp-dsi-crosslink-oled.ko /media/$USER/root/lib/modules/5.10.72-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/imx/imx8mp-dsi-crosslink-oled/
+sudo mkdir -p /media/$USER/root/lib/modules/5.10.72-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/bridge/
+sudo cp drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/imx8mp-dsi-crosslink-oled.ko /media/$USER/root/lib/modules/5.10.72-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/
 sync; umount /media/$USER/boot; umount /media/$USER/root
 
 	# create directory on destination device
-mkdir /lib/modules/5.10.72-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/imx/imx8mp-dsi-crosslink-oled
+mkdir /lib/modules/5.10.72-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled
 
 	# upload module
-scp drivers/gpu/drm/imx/imx8mp-dsi-crosslink-oled/imx8mp-dsi-crosslink-oled.ko root@192.168.30.11:/lib/modules/5.10.72-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/imx/imx8mp-dsi-crosslink-oled/
+scp drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/imx8mp-dsi-crosslink-oled.ko root@192.168.30.11:/lib/modules/5.10.72-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/
 
 	# upload Device Tree
 scp arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk-rpmsg-dsi.dtb root@192.168.30.11:/boot
 
 	# set Device Tree in U-boot
+setenv bootdelay 0
 setenv fdt_file imx8mp-phyboard-pollux-rdk-rpmsg-dsi.dtb
 saveenv
 reset
@@ -133,10 +134,10 @@ reboot
 # kernel wczytuje driver automatycznie na starcie jeśli jest w Device Tree
 
 # sysctl kernel.printk=7
-# insmod /lib/modules/5.10.72-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/imx/imx8mp-dsi-crosslink-oled/imx8mp-dsi-crosslink-oled.ko
+# insmod /lib/modules/5.10.72-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/imx8mp-dsi-crosslink-oled.ko
 # rmmod imx8mp-dsi-crosslink-oled.ko
 # modprobe imx8mp-dsi-crosslink-oled
-# rmmod imx8mp-dsi-crosslink-oled.ko; insmod /lib/modules/5.10.72-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/imx/imx8mp-dsi-crosslink-oled/imx8mp-dsi-crosslink-oled.ko
+# rmmod imx8mp-dsi-crosslink-oled.ko; insmod /lib/modules/5.10.72-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/imx8mp-dsi-crosslink-oled.ko
 
 # autorun module at boot
 echo "imx_rpmsg_connector" >> /etc/modules-load.d/imx_rpmsg_connector.conf
@@ -145,7 +146,7 @@ depmod   # recreate modules dependency list
 # rm /etc/modules-load.d/imx_rpmsg_connector.conf
 
 # compile kernel module, upload to i.MX8 and reboot
-make -j16 && scp drivers/gpu/drm/imx/imx8mp-dsi-crosslink-oled/imx8mp-dsi-crosslink-oled.ko root@192.168.30.11:/lib/modules/5.10.72-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/imx/imx8mp-dsi-crosslink-oled/
+make -j16 && scp drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/imx8mp-dsi-crosslink-oled.ko root@192.168.30.11:/lib/modules/5.10.72-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/
 # && ssh root@192.168.30.11 'reboot'
 
 cat /proc/device-tree/soc\@0/bus\@32c00000/mipi_dsi\@32e60000/status
@@ -159,14 +160,14 @@ cat /proc/device-tree/soc\@0/bus\@32c00000/lcd-controller\@32e80000/status
 devtool modify -x linux-imx linux-imx
 bitbake phytec-qt6demo-image
 
-mkdir -p ~/phyLinux/build/linux-imx/drivers/gpu/drm/imx/imx8mp-dsi-crosslink-oled/
+mkdir -p ~/phyLinux/build/linux-imx/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/
 cd <imx8mp-driver-dsi-crosslink-oled>
-cp imx8mp-dsi-crosslink-oled-i2c.{c,h} ~/phyLinux/build/linux-imx/drivers/gpu/drm/imx/imx8mp-dsi-crosslink-oled/
-cp imx8mp-dsi-crosslink-oled-main.c ~/phyLinux/build/linux-imx/drivers/gpu/drm/imx/imx8mp-dsi-crosslink-oled/
+cp imx8mp-dsi-crosslink-oled-i2c.{c,h} ~/phyLinux/build/linux-imx/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/
+cp imx8mp-dsi-crosslink-oled-main.c ~/phyLinux/build/linux-imx/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/
 cd -
 
 	# copy kernel module to ~/jarsulk-pco repository
-#source_dir=~/phyLinux/build/linux-imx/drivers/gpu/drm/imx/
+#source_dir=~/phyLinux/build/linux-imx/drivers/gpu/drm/bridge/
 #??? backup_dir=~/jarsulk-pco/projects/SOD-5/Programs/a53/kernel_space/sod5_m7_kernel_driver/sod5_m7_kernel_driver/
 #cp ${source_dir}_readme.txt ${source_dir}modules.order ${source_dir}Makefile ${source_dir}{main,parse_procfs_commands,procfs,rpmsg,sod_registers}.{c,h} $backup_dir
 
@@ -184,6 +185,9 @@ nano ~/phyLinux/build/linux-imx/arch/arm64/boot/dts/freescale/imx8mp-phyboard-po
 	panel-bridge@0 {
 		compatible = "toshiba,tc358867xbg";
 		reg = <0>;
+		status = "okay";
+		dsi-lanes = <4>;
+		video-mode = <2>;
 
 		port {
 			tc358867_in: endpoint {
@@ -222,18 +226,18 @@ nano ~/phyLinux/build/linux-imx/arch/arm64/boot/dts/freescale/imx8mp-phyboard-po
 };
 # ---------------------------------------------------------
 
-nano ~/phyLinux/build/linux-imx/drivers/gpu/drm/imx/Makefile
+nano ~/phyLinux/build/linux-imx/drivers/gpu/drm/bridge/Makefile
 # ---------------------------------------------------------
 obj-$(CONFIG_IMX8MP_DSI_CROSSLINK_OLED) += imx8mp-dsi-crosslink-oled/
 # ---------------------------------------------------------
 
-nano ~/phyLinux/build/linux-imx/drivers/gpu/drm/imx/imx8mp-dsi-crosslink-oled/Makefile
+nano ~/phyLinux/build/linux-imx/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/Makefile
 # ---------------------------------------------------------
 imx8mp-dsi-crosslink-oled-objs := imx8mp-dsi-crosslink-oled-main.o imx8mp-dsi-crosslink-oled-i2c.o
 obj-$(CONFIG_IMX8MP_DSI_CROSSLINK_OLED) += imx8mp-dsi-crosslink-oled.o
 # ---------------------------------------------------------
 
-nano ~/phyLinux/build/linux-imx/drivers/gpu/drm/imx/Kconfig
+nano ~/phyLinux/build/linux-imx/drivers/gpu/drm/bridge/Kconfig
 # ---------------------------------------------------------
 config IMX8MP_DSI_CROSSLINK_OLED
 	tristate "I.MX 8M Plus DSI - Crosslink - OLED driver"
@@ -269,7 +273,7 @@ bitbake linux-imx -c compile -f && bitbake linux-imx -c deploy
 
 ll tmp/work/phyboard_pollux_imx8mp_3-phytec-linux/linux-imx/5.15.71-r0.0/linux-imx-5.15.71/arch/arm64/boot/Image
 ll tmp/work/phyboard_pollux_imx8mp_3-phytec-linux/linux-imx/5.15.71-r0.0/linux-imx-5.15.71/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dtb
-ll tmp/work/phyboard_pollux_imx8mp_3-phytec-linux/linux-imx/5.15.71-r0.0/image/lib/modules/5.15.71-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/imx/imx8mp-dsi-crosslink-oled/imx8mp-dsi-crosslink-oled.ko
+ll tmp/work/phyboard_pollux_imx8mp_3-phytec-linux/linux-imx/5.15.71-r0.0/image/lib/modules/5.15.71-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/imx8mp-dsi-crosslink-oled.ko
 
 	# send output files to i.MX via SSH
 # send to i.MX: Image
@@ -279,7 +283,7 @@ scp tmp/work/phyboard_pollux_imx8mp_3-phytec-linux/linux-imx/5.15.71-r0.0/linux-
 scp tmp/work/phyboard_pollux_imx8mp_3-phytec-linux/linux-imx/5.15.71-r0.0/linux-imx-5.15.71/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dtb root@192.168.3.11:/boot/
 
 # send to i.MX: imx8mp-dsi-crosslink-oled.ko
-scp tmp/work/phyboard_pollux_imx8mp_3-phytec-linux/linux-imx/5.15.71-r0.0/image/lib/modules/5.15.71-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/imx/imx8mp-dsi-crosslink-oled/imx8mp-dsi-crosslink-oled.ko root@192.168.3.11:/lib/modules/5.15.71-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/imx/imx8mp-dsi-crosslink-oled/
+scp tmp/work/phyboard_pollux_imx8mp_3-phytec-linux/linux-imx/5.15.71-r0.0/image/lib/modules/5.15.71-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/imx8mp-dsi-crosslink-oled.ko root@192.168.3.11:/lib/modules/5.15.71-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/
 
 	# or write to SD card:
 # write to SD card: Image
@@ -289,8 +293,8 @@ cp tmp/work/phyboard_pollux_imx8mp_3-phytec-linux/linux-imx/5.15.71-r0.0/linux-i
 cp tmp/work/phyboard_pollux_imx8mp_3-phytec-linux/linux-imx/5.15.71-r0.0/linux-imx-5.15.71/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dtb /media/$USER/boot/
 
 # write to SD card: imx8mp-dsi-crosslink-oled.ko
-sudo mkdir -p /media/$USER/root/lib/modules/5.15.71-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/imx/imx8mp-dsi-crosslink-oled/
-sudo cp tmp/work/phyboard_pollux_imx8mp_3-phytec-linux/linux-imx/5.15.71-r0.0/image/lib/modules/5.15.71-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/imx/imx8mp-dsi-crosslink-oled/imx8mp-dsi-crosslink-oled.ko /media/$USER/root/lib/modules/5.15.71-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/imx/imx8mp-dsi-crosslink-oled/
+sudo mkdir -p /media/$USER/root/lib/modules/5.15.71-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/
+sudo cp tmp/work/phyboard_pollux_imx8mp_3-phytec-linux/linux-imx/5.15.71-r0.0/image/lib/modules/5.15.71-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/imx8mp-dsi-crosslink-oled.ko /media/$USER/root/lib/modules/5.15.71-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/
 
 sync; umount /media/$USER/boot; umount /media/$USER/root
 
@@ -299,10 +303,6 @@ depmod
 modprobe imx8mp-dsi-crosslink-oled
 modprobe -r imx8mp-dsi-crosslink-oled
 
-	# U-boot
-setenv fdt_file imx8mp-phyboard-pollux-rdk.dtb
-saveenv
-reset
 
-dmesg | grep dsi_oled_driver
-dmesg | grep dsi
+dmesg | grep -i dsi_oled_driver
+dmesg | grep -i dsi

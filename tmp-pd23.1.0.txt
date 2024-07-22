@@ -9,6 +9,7 @@ pd23.1.0
 touch .scmversion
 
 # first compile Kernel
+make imx_v8_defconfig imx8_phytec_distro.config imx8_phytec_platform.config
 make -j $(nproc) LOCALVERSION="-bsp-yocto-nxp-i.mx8mp-pd23.1.0" EXTRAVERSION=""
 strings arch/arm64/boot/Image | grep 'Linux version'
 
@@ -66,8 +67,8 @@ insmod /lib/modules/5.15.71-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/dr
 rmmod imx8mp-dsi-crosslink-oled.ko
 
 
-dmesg | grep dsi_oled_driver
-dmesg | grep dsi
+dmesg | grep -i dsi_oled_driver
+dmesg | grep -i dsi
 
 # journalctl -o short-precise -k -b -1  # last boot - not works
 # /run/log/journal
@@ -77,8 +78,8 @@ echo "cp -r /run/log/journal/ /root/" >> ~/.bashrc
 
 
 alias co='make -j $(nproc) LOCALVERSION="-bsp-yocto-nxp-i.mx8mp-pd23.1.0" EXTRAVERSION=""'
-alias up='scp arch/arm64/boot/Image root@192.168.3.11:/boot/; scp drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/imx8mp-dsi-crosslink-oled.ko root@192.168.3.11:/lib/modules/5.15.71-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/; scp arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dtb root@192.168.3.11:/boot'
-alias cp='cp arch/arm64/boot/Image /media/$USER/boot/; cp arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dtb /media/$USER/boot/; sudo cp drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/imx8mp-dsi-crosslink-oled.ko /media/$USER/root/lib/modules/5.15.71-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/'
+alias up='ssh root@192.168.3.11 "mkdir -p /lib/modules/5.15.71-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/"; scp arch/arm64/boot/Image root@192.168.3.11:/boot/; scp drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/imx8mp-dsi-crosslink-oled.ko root@192.168.3.11:/lib/modules/5.15.71-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/; scp arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dtb root@192.168.3.11:/boot'
+alias cpsd='sudo mkdir -p /lib/modules/5.15.71-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/; cp arch/arm64/boot/Image /media/$USER/boot/; cp arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dtb /media/$USER/boot/; sudo cp drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/imx8mp-dsi-crosslink-oled.ko /media/$USER/root/lib/modules/5.15.71-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/'
 alias re='ssh root@192.168.3.11 reboot'
 
 pr_info("dsi ---------------- suspend");
@@ -115,3 +116,23 @@ https://git.phytec.de/linux-imx/tree/drivers/gpu/drm/imx/sec_mipi_dsim-imx.c?h=v
 	compatible = "fsl,imx8mp-mipi-dsim", "pco,dsi_crosslink_oled_svga060";
 };
 
+platform 32e80000.lcd-controller: Fixing up cyclic dependency with 32e60000.mipi_dsi
+imx_sec_dsim_drv 32e60000.mipi_dsi: version number is 0x1060200
+[drm:drm_bridge_attach] *ERROR* failed to attach bridge /soc@0/bus@32c00000/mipi_dsi@32e60000 to encoder DSI-40: -19
+imx_sec_dsim_drv 32e60000.mipi_dsi: Failed to attach bridge: 32e60000.mipi_dsi
+imx_sec_dsim_drv 32e60000.mipi_dsi: failed to bind sec dsim bridge: -19
+imx-drm display-subsystem: bound 32e60000.mipi_dsi (ops imx_sec_dsim_ops)
+
+-----------------------
+
+z portami:
+
+imx_sec_dsim_drv 32e60000.mipi_dsi: version number is 0x1060200
+imx_sec_dsim_drv 32e60000.mipi_dsi: [drm] *ERROR* modalias failure on /soc@0/bus@32c00000/mipi_dsi@32e60000/port@1
+[drm:drm_bridge_attach] *ERROR* failed to attach bridge /soc@0/bus@32c00000/mipi_dsi@32e60000 to encoder DSI-40: -19
+imx_sec_dsim_drv 32e60000.mipi_dsi: Failed to attach bridge: 32e60000.mipi_dsi
+imx_sec_dsim_drv 32e60000.mipi_dsi: failed to bind sec dsim bridge: -517
+
+
+------------------------
+meld /home/p2119/linux-imx-v5.15.71_2.2.2-phy/drivers/gpu/drm/bridge/sec-dsim.c /home/p2119/linux-imx-v5.10.72_2.2.0-phy/drivers/gpu/drm/bridge/sec-dsim.c

@@ -1,0 +1,88 @@
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux.dtsi
+index c46afb46b..254cf9663 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux.dtsi
+@@ -251,9 +251,46 @@ &lcdif3 {
+ 	status = "okay";
+ };
+ 
++
++
++/* DSI */
++&lcdif1 {
++	status = "okay";
++};
++
++&mipi_dsi {
++	status = "okay";
++
++	panel@0 {
++		compatible = "pco,dsi_crosslink_oled_svga060";
++		reg = <0>;
++		dsi-lanes = <4>;
++		video-mode = <2>;
++		status = "okay";
++
++		port {
++			dsi_crosslink_oled_in: endpoint {
++				remote-endpoint = <&dsi_crosslink_oled_out>;
++			};
++		};
++	};
++
++	port@1 {
++		reg = <1>;
++
++		dsi_crosslink_oled_out: endpoint {
++			remote-endpoint = <&dsi_crosslink_oled_in>;
++		};
++	};
++};
++
++
++
++
++
+ /* LVDS1 */
+ &ldb {
+-	status = "okay";
++	status = "disabled";
+ 
+ 	lvds-channel@1 {
+ 		fsl,data-mapping = "spwg";
+@@ -271,7 +308,7 @@ lvds1_out: endpoint {
+ };
+ 
+ &ldb_phy {
+-	status = "okay";
++	status = "disabled";
+ };
+ 
+ &pcie{
+diff --git a/drivers/gpu/drm/bridge/Kconfig b/drivers/gpu/drm/bridge/Kconfig
+index 962626c7b..5cbdda486 100644
+--- a/drivers/gpu/drm/bridge/Kconfig
++++ b/drivers/gpu/drm/bridge/Kconfig
+@@ -295,3 +295,13 @@ config DRM_ITE_IT6161
+ 	  ITE IT6161 bridge chip driver.
+ 
+ endmenu
++
++config IMX8MP_DSI_CROSSLINK_OLED
++	tristate "I.MX 8M Plus DSI - Crosslink - OLED driver"
++	default m
++	depends on OF
++	select DRM_MIPI_DSI
++	select DRM_KMS_HELPER
++	select DRM_PANEL
++	help
++	  I.MX 8M Plus DSI - Crosslink - OLED driver
+diff --git a/drivers/gpu/drm/bridge/Makefile b/drivers/gpu/drm/bridge/Makefile
+index 28c9050b1..2a63ff9e7 100644
+--- a/drivers/gpu/drm/bridge/Makefile
++++ b/drivers/gpu/drm/bridge/Makefile
+@@ -33,3 +33,4 @@ obj-$(CONFIG_DRM_ITE_IT6263) += it6263.o
+ obj-$(CONFIG_DRM_ITE_IT6263) += it6161.o
+ obj-$(CONFIG_DRM_SEC_MIPI_DSIM) += sec-dsim.o
+ obj-$(CONFIG_DRM_NXP_SEIKO_43WVFIG) += nxp-seiko-43wvfig.o
++obj-y += imx8mp-dsi-crosslink-oled/

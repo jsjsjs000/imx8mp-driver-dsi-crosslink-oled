@@ -285,7 +285,7 @@ static int dsi_crosslink_dsi_probe(struct mipi_dsi_device *dsi)
 	if (err < 0)
 		return err;
 
-	i2c_driver_write_registers();
+	// i2c_driver_write_registers();
 
 	return 0;
 }
@@ -325,11 +325,11 @@ static int __init dsi_crosslink_init(void)
 
 	pr_info(TAG "initinalize\n");
 
-	if (i2c_driver_init() < 0)
-	{
-		pr_err("i2c_add_driver() failed\n");
-		return err;
-	}
+	// if (i2c_driver_init() < 0)
+	// {
+	// 	pr_err("i2c_add_driver() failed\n");
+	// 	return err;
+	// }
 
 	if (IS_ENABLED(CONFIG_DRM_MIPI_DSI))
 	{
@@ -348,7 +348,7 @@ module_init(dsi_crosslink_init);
 static void __exit dsi_crosslink_exit(void)
 {
 	pr_info(TAG "deinitialize\n");
-	i2c_driver_exit();
+	// i2c_driver_exit();
 
 	if (IS_ENABLED(CONFIG_DRM_MIPI_DSI))
 	{

@@ -1,0 +1,161 @@
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dts b/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dts
+index 23a37a9bc..20651c4aa 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dts
+@@ -262,9 +262,66 @@ &lcdif3 {
+ 	status = "okay";
+ };
+ 
++
++/* DSI */
++&lcdif1 {
++	status = "okay";
++};
++
++/*
++&mipi_dsi {
++	status = "okay";
++	compatible = "fsl,imx8mp-mipi-dsim", "pco,dsi_crosslink_oled_svga060";
++}; */
++
++
++/*
++&mipi_dsi {
++	status = "okay";
++
++	panel@0 {
++		compatible = "pco,dsi_crosslink_oled_svga060";
++		reg = <0>;
++		status = "okay";
++		// pinctrl-0 = <&pinctrl_mipi_dsi_en>;
++		// reset-gpio = <&gpio1 8 GPIO_ACTIVE_LOW>;
++		dsi-lanes = <4>;
++		video-mode = <2>;
++	};
++};
++*/
++
++
++&mipi_dsi {
++	status = "okay";
++
++	bridge@0 {
++		compatible = "pco,dsi_crosslink_oled_svga060";
++		reg = <0>;
++		status = "okay";
++		dsi-lanes = <4>;
++		video-mode = <2>;
++
++		port {
++			dsi_crosslink_oled_in: endpoint {
++				remote-endpoint = <&dsi_crosslink_oled_out>;
++			};
++		};
++	};
++
++	port@1 {
++		reg = <1>;
++		status = "okay"; // ?
++
++		dsi_crosslink_oled_out: endpoint {
++			remote-endpoint = <&dsi_crosslink_oled_in>;
++		};
++	};
++};
++
+ /* LVDS1 */
+ &ldb {
+-	status = "okay";
++	status = "disabled";
+ 
+ 	lvds-channel@1 {
+ 		fsl,data-mapping = "spwg";
+@@ -282,7 +339,7 @@ lvds1_out: endpoint {
+ };
+ 
+ &ldb_phy {
+-	status = "okay";
++	status = "disabled";
+ };
+ 
+ /* Mini PCIe */
+diff --git a/drivers/gpu/drm/bridge/Kconfig b/drivers/gpu/drm/bridge/Kconfig
+index 3d81471f8..c1f228127 100644
+--- a/drivers/gpu/drm/bridge/Kconfig
++++ b/drivers/gpu/drm/bridge/Kconfig
+@@ -363,3 +363,13 @@ config DRM_ITE_IT6161
+ 	  ITE IT6161 bridge chip driver.
+ 
+ endmenu
++
++config IMX8MP_DSI_CROSSLINK_OLED
++	tristate "I.MX 8M Plus DSI - Crosslink - OLED driver"
++	default m
++	depends on OF
++	select DRM_MIPI_DSI
++	select DRM_KMS_HELPER
++	select DRM_PANEL
++	help
++	  I.MX 8M Plus DSI - Crosslink - OLED driver
+diff --git a/drivers/gpu/drm/bridge/Makefile b/drivers/gpu/drm/bridge/Makefile
+index 0f93f88d1..cdcf4dbe4 100644
+--- a/drivers/gpu/drm/bridge/Makefile
++++ b/drivers/gpu/drm/bridge/Makefile
+@@ -38,3 +38,4 @@ obj-$(CONFIG_DRM_ITE_IT6263) += it6263.o
+ obj-$(CONFIG_DRM_ITE_IT6263) += it6161.o
+ obj-$(CONFIG_DRM_SEC_MIPI_DSIM) += sec-dsim.o
+ obj-$(CONFIG_DRM_NXP_SEIKO_43WVFIG) += nxp-seiko-43wvfig.o
++obj-y += imx8mp-dsi-crosslink-oled/
+diff --git a/drivers/gpu/drm/bridge/sec-dsim.c b/drivers/gpu/drm/bridge/sec-dsim.c
+index 1eb34e755..680a17764 100644
+--- a/drivers/gpu/drm/bridge/sec-dsim.c
++++ b/drivers/gpu/drm/bridge/sec-dsim.c
+@@ -1446,8 +1446,11 @@ sec_mipi_dsim_bridge_atomic_disable(struct drm_bridge *bridge,
+ 		return;
+ 
+ disable:
++pr_err("DSI -------- disable 1");
++
+ 	if (!dsim->enabled)
+ 		return;
++pr_err("DSI -------- disable 2");
+ 
+ 	/* disable panel if exists */
+ 	if (dsim->panel) {
+@@ -2022,9 +2025,11 @@ int sec_mipi_dsim_bind(struct device *dev, struct device *master, void *data,
+ 		if (ret != -EPROBE_DEFER) {
+ 			for_each_available_child_of_node(dev->of_node, node) {
+ 				/* skip nodes without reg property */
++pr_err("DSI -------- panel 1");
+ 				if (!of_find_property(node, "reg", NULL))
+ 					continue;
+ 
++pr_err("DSI -------- panel 2");
+ 				/* error codes only ENODEV or EPROBE_DEFER */
+ 				dsim->panel = of_drm_find_panel(node);
+ 				if (!IS_ERR(dsim->panel))
+@@ -2039,6 +2044,8 @@ int sec_mipi_dsim_bind(struct device *dev, struct device *master, void *data,
+ 	}
+ 
+ panel:
++pr_err("DSI -------- panel 3");
++
+ 	if (dsim->panel) {
+ 		/* A panel has been attached */
+ 		connector = &dsim->connector;
+diff --git a/drivers/gpu/drm/imx/sec_mipi_dsim-imx.c b/drivers/gpu/drm/imx/sec_mipi_dsim-imx.c
+index 4542b1ddc..cb6ef93e2 100644
+--- a/drivers/gpu/drm/imx/sec_mipi_dsim-imx.c
++++ b/drivers/gpu/drm/imx/sec_mipi_dsim-imx.c
+@@ -382,6 +382,11 @@ static int imx_sec_dsim_bind(struct device *dev, struct device *master,
+ 				 dsim_dev->base, dsim_dev->irq, pdata);
+ 	if (ret) {
+ 		dev_err(dev, "failed to bind sec dsim bridge: %d\n", ret);
++
++// if (ret == -517)
++// 	return 0;
++
++
+ 		drm_encoder_cleanup(encoder);
+ 
+ 		/* If no panel or bridge connected, just return 0

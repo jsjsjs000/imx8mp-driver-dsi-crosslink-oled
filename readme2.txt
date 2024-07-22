@@ -1,6 +1,12 @@
+cd linux-imx-v5.15.71_2.2.2-phy/
 mkdir -p drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/
-cp ../imx8mp-driver-dsi-crosslink-oled/imx8mp-dsi-crosslink-oled-* drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/
-cp ../imx8mp-driver-dsi-crosslink-oled/Makefile drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/
+
+# set git repositorium location
+git_imx8mp_driver_dsi_crosslink_oled=~/git-driver-dsi-crosslink-oled
+#git_imx8mp_driver_dsi_crosslink_oled=~/jarsulk-pco/projects/LT-22/Programs/A53/kernel_space/imx8mp-driver-dsi-crosslink-oled/
+
+cp $git_imx8mp_driver_dsi_crosslink_oled/imx8mp-dsi-crosslink-oled-* drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/
+cp $git_imx8mp_driver_dsi_crosslink_oled/Makefile drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/
 
 echo "obj-y += imx8mp-dsi-crosslink-oled/" >> drivers/gpu/drm/bridge/Makefile
 
