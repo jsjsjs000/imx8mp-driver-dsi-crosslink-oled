@@ -37,9 +37,12 @@ nano arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk-rpmsg-dsi.dts
 &mipi_dsi {
 	status = "okay";
 
-	panel-bridge@0 {
-		compatible = "toshiba,tc358867xbg";
+	panel@0 { // panel-bridge
+		compatible = "pco,dsi_crosslink_oled_svga060"; // toshiba,tc358867xbg
 		reg = <0>;
+		dsi-lanes = <4>;
+		video-mode = <2>;
+		status = "okay";
 
 		port {
 			tc358867_in: endpoint {
@@ -49,15 +52,14 @@ nano arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk-rpmsg-dsi.dts
 
 		display-timings {
 			lcd {
-				// all EDT displays - Leave clock at 25175000!!!
-				clock-frequency = <25175000>;
-				hactive = <320>;
-				vactive = <240>;
-				hback-porch = <38>;
-				hfront-porch = <20>;
-				vback-porch = <14>;
-				vfront-porch = <4>;
-				hsync-len = <30>;
+				clock-frequency = <40000000>;
+				hactive = <800>;
+				vactive = <600>;
+				hback-porch = <88>;
+				hfront-porch = <40>;
+				vback-porch = <23>;
+				vfront-porch = <1>;
+				hsync-len = <128>;
 				vsync-len = <4>;
 				hsync-active = <0>;
 				vsync-active = <0>;
@@ -65,7 +67,6 @@ nano arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk-rpmsg-dsi.dts
 				pixelclk-active = <0>;
 			};
 		};
-
 	};
 
 	port@1 {
@@ -264,6 +265,10 @@ nano ~/phyLinux/build/tmp/work/phyboard_pollux_imx8mp_3-phytec-linux/linux-imx/5
 CONFIG_IMX8MP_DSI_CROSSLINK_OLED=y
 # ---------------------------------------------------------
 
+# check is module enabled in .config
+cat ~/phyLinux/build/tmp/work/phyboard_pollux_imx8mp_3-phytec-linux/linux-imx/5.15.71-r0.0/linux-imx-5.15.71/.config | grep -i CONFIG_IMX8MP_DSI_CROSSLINK_OLED
+#> CONFIG_IMX8MP_DSI_CROSSLINK_OLED=m
+
 	# compile and deploy kernel
 bitbake linux-imx -c compile -f && bitbake linux-imx -c deploy
 
@@ -306,3 +311,15 @@ modprobe -r imx8mp-dsi-crosslink-oled
 
 dmesg | grep -i dsi_oled_driver
 dmesg | grep -i dsi
+
+# upload original Kernel image from Yocto
+scp ~/phyLinux/build/tmp/work/phyboard_pollux_imx8mp_3-phytec-linux/linux-imx/5.15.71-r0.0/build/arch/arm64/boot/Image root@192.168.3.11:/boot/
+
+
+
+# usefull aliases
+alias co='bitbake linux-imx -c compile -f && bitbake linux-imx -c deploy'
+alias lll='ll tmp/work/phyboard_pollux_imx8mp_3-phytec-linux/linux-imx/5.15.71-r0.0/linux-imx-5.15.71/arch/arm64/boot/Image; ll tmp/work/phyboard_pollux_imx8mp_3-phytec-linux/linux-imx/5.15.71-r0.0/linux-imx-5.15.71/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dtb; ll tmp/work/phyboard_pollux_imx8mp_3-phytec-linux/linux-imx/5.15.71-r0.0/image/lib/modules/5.15.71-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/imx8mp-dsi-crosslink-oled.ko'
+alias up='scp tmp/work/phyboard_pollux_imx8mp_3-phytec-linux/linux-imx/5.15.71-r0.0/linux-imx-5.15.71/arch/arm64/boot/Image root@192.168.3.11:/boot/; scp tmp/work/phyboard_pollux_imx8mp_3-phytec-linux/linux-imx/5.15.71-r0.0/linux-imx-5.15.71/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dtb root@192.168.3.11:/boot/; scp tmp/work/phyboard_pollux_imx8mp_3-phytec-linux/linux-imx/5.15.71-r0.0/image/lib/modules/5.15.71-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/imx8mp-dsi-crosslink-oled.ko root@192.168.3.11:/lib/modules/5.15.71-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/'
+alias cpsd='cp tmp/work/phyboard_pollux_imx8mp_3-phytec-linux/linux-imx/5.15.71-r0.0/linux-imx-5.15.71/arch/arm64/boot/Image /media/$USER/boot/; cp tmp/work/phyboard_pollux_imx8mp_3-phytec-linux/linux-imx/5.15.71-r0.0/linux-imx-5.15.71/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dtb /media/$USER/boot/; sudo mkdir -p /media/$USER/root/lib/modules/5.15.71-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/; sudo cp tmp/work/phyboard_pollux_imx8mp_3-phytec-linux/linux-imx/5.15.71-r0.0/image/lib/modules/5.15.71-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/imx8mp-dsi-crosslink-oled.ko /media/$USER/root/lib/modules/5.15.71-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/'
+alias re='ssh root@192.168.3.11 reboot'
