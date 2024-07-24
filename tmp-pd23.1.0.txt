@@ -124,7 +124,6 @@ https://git.phytec.de/linux-imx/tree/drivers/gpu/drm/imx/sec_mipi_dsim-imx.c?h=v
 };
 --------------
 
-
 platform 32e80000.lcd-controller: Fixing up cyclic dependency with 32e60000.mipi_dsi
 imx_sec_dsim_drv 32e60000.mipi_dsi: version number is 0x1060200
 [drm:drm_bridge_attach] *ERROR* failed to attach bridge /soc@0/bus@32c00000/mipi_dsi@32e60000 to encoder DSI-40: -19
@@ -134,7 +133,7 @@ imx-drm display-subsystem: bound 32e60000.mipi_dsi (ops imx_sec_dsim_ops)
 
 -----------------------
 
-z portami:
+z portami - pętla nieskończona:
 
 imx_sec_dsim_drv 32e60000.mipi_dsi: version number is 0x1060200
 imx_sec_dsim_drv 32e60000.mipi_dsi: [drm] *ERROR* modalias failure on /soc@0/bus@32c00000/mipi_dsi@32e60000/port@1

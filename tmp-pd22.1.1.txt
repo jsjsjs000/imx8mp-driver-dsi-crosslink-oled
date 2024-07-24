@@ -77,3 +77,17 @@ imx8mp_dsi_crosslink_oled    16384  0
 crct10dif_ce           20480  1
 imx_sdma               36864  5
 fuse                  131072  1
+
+
+imx_sec_dsim_drv 32e60000.mipi_dsi: version number is 0x1060200
+imx_sec_dsim_drv 32e60000.mipi_dsi: [drm] *ERROR* modalias failure on /soc@0/bus@32c00000/mipi_dsi@32e60000/port@1
+imx_sec_dsim_drv 32e60000.mipi_dsi: Failed to attach bridge: 32e60000.mipi_dsi
+imx_sec_dsim_drv 32e60000.mipi_dsi: failed to bind sec dsim bridge: -517
+imx_sec_dsim_drv 32e60000.mipi_dsi: Unbalanced imx_sec_dsim_runtime_resume!
+dsi_oled_driver: initinalize
+
+imx_sec_dsim_drv 32e60000.mipi_dsi: version number is 0x1060200
+dsi_oled_driver: probe
+imx_sec_dsim_drv 32e60000.mipi_dsi: [drm] *ERROR* modalias failure on /soc@0/bus@32c00000/mipi_dsi@32e60000/port@1
+imx-drm display-subsystem: bound 32e60000.mipi_dsi (ops imx_sec_dsim_ops)
+dsi_oled_driver: get modes
