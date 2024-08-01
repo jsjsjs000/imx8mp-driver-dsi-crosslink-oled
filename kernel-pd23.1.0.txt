@@ -1,9 +1,10 @@
 git clone --depth 1 -b v5.15.71_2.2.2-phy git://git.phytec.de/linux-imx
 mv linux-imx linux-imx-v5.15.71_2.2.2-phy
-# v5.15.71_2.2.2-phy5 = -phy  # Yocto PD22.1.1
+# v5.15.71_2.2.2-phy5 = -phy  # Yocto PD23.1.0
 
 cd linux-imx-v5.15.71_2.2.2-phy/
-pd23.1.0
+source /opt/ampliphy-vendor-xwayland/BSP-Yocto-NXP-i.MX8MP-PD23.1.0/environment-setup-cortexa53-crypto-phytec-linux
+set sysroot /opt/ampliphy-vendor-xwayland/BSP-Yocto-NXP-i.MX8MP-PD23.1.0/sysroots/cortexa53-crypto-phytec-linux
 
 # fix Kernel version add -dirty or 13 digit number
 touch .scmversion
@@ -13,19 +14,26 @@ make imx_v8_defconfig imx8_phytec_distro.config imx8_phytec_platform.config
 make -j $(nproc) LOCALVERSION="-bsp-yocto-nxp-i.mx8mp-pd23.1.0" EXTRAVERSION=""
 strings arch/arm64/boot/Image | grep 'Linux version'
 
-# set Device Tree in U-boot
-setenv bootdelay 0
-setenv fdt_file imx8mp-phyboard-pollux-rdk.dtb
-saveenv
-reset
-
-# i.MX
-echo "fdt_file=imx8mp-phyboard-pollux-rdk.dtb" >> /boot/bootenv.txt
-reboot
-
 # compile Kernel
 make -j $(nproc) LOCALVERSION="-bsp-yocto-nxp-i.mx8mp-pd23.1.0" EXTRAVERSION=""
 #> I.MX 8M Plus DSI - Crosslink - OLED driver (IMX8MP_DSI_CROSSLINK_OLED) [M/n/y/?] (NEW) - Enter
+
+# set Device Tree in U-boot
+setenv bootdelay 0
+setenv fdt_file imx8mp-phyboard-pollux-rdk.dtb
+setenv overlays imx8mp-dsi-crosslink-oled.dtbo
+saveenv
+reset
+
+# i.MX Linux - remove imx8mp-phyboard-pollux-peb-av-010.dtbo overlay
+vi /boot/bootenv.txt
+# ----------------------------------------
+# overlays=imx8mp-phyboard-pollux-peb-av-010.dtbo
+# ----------------------------------------
+
+# or i.MX
+echo "fdt_file=imx8mp-phyboard-pollux-rdk.dtb" >> /boot/bootenv.txt
+reboot
 
 # upload Kernel and driver to i.MX
 ssh root@192.168.3.11 'mkdir -p /lib/modules/5.15.71-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/'
@@ -47,21 +55,30 @@ cat include/config/kernel.release
 cat include/generated/utsrelease.h
 
 # git
-git diff HEAD > 0000-kernel-dsi-pd22.1.1.patch
+git diff HEAD > 0000-kernel-dsi-pd23.1.1.patc0
 #git diff > 0001-patch1.patch
-#git diff -- cached > 0001-patch1.patch  # changes not in index
+#git diff --cached > 0001-patch1.patch  # changes not in index
 
 git reset --hard
-git apply 0000-kernel-dsi-pd22.1.1.patch
+git apply 0000-kernel-dsi-pd23.1.1.patc0
+
+	# Linux
+depmod   # recreate modules dependency list
+reboot
+# kernel wczytuje driver automatycznie na starcie jeśli jest w Device Tree
 
 # module testing
 sysctl kernel.printk=7
 insmod /lib/modules/5.15.71-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/imx8mp-dsi-crosslink-oled.ko
 rmmod imx8mp-dsi-crosslink-oled.ko
+modprobe imx8mp-dsi-crosslink-oled
 
 # testing
 dmesg | grep -i dsi_oled_driver
 dmesg | grep -i dsi
+
+cat /proc/device-tree/soc\@0/bus\@32c00000/mipi_dsi\@32e60000/status
+cat /proc/device-tree/soc\@0/bus\@32c00000/lcd-controller\@32e80000/status
 
 # journalctl -o short-precise -k -b -1  # last boot - not works
 # /run/log/journal
@@ -75,74 +92,12 @@ alias up='ssh root@192.168.3.11 "mkdir -p /lib/modules/5.15.71-bsp-yocto-nxp-i.m
 alias cpsd='sudo mkdir -p /lib/modules/5.15.71-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/; cp arch/arm64/boot/Image /media/$USER/boot/; cp arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dtb /media/$USER/boot/; sudo cp drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/imx8mp-dsi-crosslink-oled.ko /media/$USER/root/lib/modules/5.15.71-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/'
 alias re='ssh root@192.168.3.11 reboot'
 
-
-pr_info("dsi ---------------- suspend");
-
+# see
 /home/jarsulk/linux-imx-v5.15.71_2.2.2-phy/drivers/gpu/drm/imx/sec_mipi_dsim-imx.c
 /home/jarsulk/linux-imx-v5.15.71_2.2.2-phy/drivers/gpu/drm/bridge/sec-dsim.c
 /home/jarsulk/linux-imx-v5.15.71_2.2.2-phy/drivers/gpu/drm/drm_bridge.c
 
 https://git.phytec.de/linux-imx/tree/drivers/gpu/drm/imx/sec_mipi_dsim-imx.c?h=v5.15.71_2.2.2-phy5
-
-------------- nie działa - startuje Linux - nie ładuje drivera
-&lcdif1 {
-	status = "okay";
-};
-
-&mipi_dsi {
-	status = "okay";
-
-	panel {
-		compatible = "pco,dsi_crosslink_oled_svga060";
-		dsi-lanes = <4>;
-		video-mode = <2>;
-		status = "okay";
-	};
-};
-
-------------- nie działa - startuje Linux - ładuje driver
-&lcdif1 {
-	status = "okay";
-};
-
-&mipi_dsi {
-	status = "okay";
-	compatible = "fsl,imx8mp-mipi-dsim", "pco,dsi_crosslink_oled_svga060";
-};
-
--------------- pętla podczas boot'owania
-&mipi_dsi {
-	status = "okay";
-
-	panel@0 {
-		compatible = "pco,dsi_crosslink_oled_svga060";
-		reg = <0>;
-		dsi-lanes = <4>;
-		video-mode = <2>;
-		status = "okay";
-	};
-};
---------------
-
-platform 32e80000.lcd-controller: Fixing up cyclic dependency with 32e60000.mipi_dsi
-imx_sec_dsim_drv 32e60000.mipi_dsi: version number is 0x1060200
-[drm:drm_bridge_attach] *ERROR* failed to attach bridge /soc@0/bus@32c00000/mipi_dsi@32e60000 to encoder DSI-40: -19
-imx_sec_dsim_drv 32e60000.mipi_dsi: Failed to attach bridge: 32e60000.mipi_dsi
-imx_sec_dsim_drv 32e60000.mipi_dsi: failed to bind sec dsim bridge: -19
-imx-drm display-subsystem: bound 32e60000.mipi_dsi (ops imx_sec_dsim_ops)
-
------------------------
-
-z portami - pętla nieskończona:
-
-imx_sec_dsim_drv 32e60000.mipi_dsi: version number is 0x1060200
-imx_sec_dsim_drv 32e60000.mipi_dsi: [drm] *ERROR* modalias failure on /soc@0/bus@32c00000/mipi_dsi@32e60000/port@1
-[drm:drm_bridge_attach] *ERROR* failed to attach bridge /soc@0/bus@32c00000/mipi_dsi@32e60000 to encoder DSI-40: -19
-imx_sec_dsim_drv 32e60000.mipi_dsi: Failed to attach bridge: 32e60000.mipi_dsi
-imx_sec_dsim_drv 32e60000.mipi_dsi: failed to bind sec dsim bridge: -517
-
-------------------------
-meld /home/p2119/linux-imx-v5.15.71_2.2.2-phy/drivers/gpu/drm/bridge/sec-dsim.c /home/p2119/linux-imx-v5.10.72_2.2.0-phy/drivers/gpu/drm/bridge/sec-dsim.c
 
 ------------------------
 lsmod
