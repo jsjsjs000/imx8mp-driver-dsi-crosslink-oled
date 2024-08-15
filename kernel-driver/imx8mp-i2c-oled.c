@@ -11,21 +11,6 @@
 
 #define TAG "i2c_oled_driver: "
 
-// #define I2C_BUS 3                 // I2C4 (3 counting from 0)
-// #define OLED_ADDRESS_RIGHT 0x0e
-// #define OLED_ADDRESS_LEFT  0x0f
-
-// struct i2c_adapter *adapter;
-// struct i2c_client *client_l;
-// struct i2c_client *client_r;
-
-// struct i2c_board_info oled_info_l = {
-// 	I2C_BOARD_INFO("oled", OLED_ADDRESS_LEFT)
-// };
-// struct i2c_board_info oled_info_r = {
-// 	I2C_BOARD_INFO("oled", OLED_ADDRESS_RIGHT)
-// };
-
 static void send_i2c(struct i2c_client *client, u8 reg, u8 value)
 {
 	int result = 0;
@@ -101,17 +86,18 @@ static const struct of_device_id i2c_of_match[] = {
 	},
 	{}
 };
-MODULE_DEVICE_TABLE(i2c, i2c_of_match);
+MODULE_DEVICE_TABLE(of, i2c_of_match);
 
 static struct i2c_device_id i2c_table[] = {
-  { "i2c_oled_driver", 0},
+  { "i2c_oled_driver", 0 },
   {}
 };
+MODULE_DEVICE_TABLE(i2c, i2c_table);
 
 static int i2c_oled_probe(struct i2c_client *client, const struct i2c_device_id *id)
 {
-	pr_info(TAG "probe\n");
-	// i2c_driver_write_oled_registers(client);
+	pr_info(TAG "probe %x\n", client->addr);
+	i2c_driver_write_oled_registers(client);
 	return 0;
 }
 
@@ -128,32 +114,11 @@ static struct i2c_driver i2c_oled_driver = {
 	},
   .id_table = i2c_table,
 	.probe = i2c_oled_probe,
-	.remove = i2c_oled_remove
+	.remove = i2c_oled_remove,
 };
 
-static int __init i2c_oled_init(void)
-{
-	// int err;
+module_i2c_driver(i2c_oled_driver);
 
-	pr_info(TAG "initinalize\n");
-
-	// if (i2c_driver_init() < 0)
-	// {
-	// 	pr_err("i2c_add_driver() failed\n");
-	// 	return err;
-	// }
-
-	return 0;
-}
-module_init(i2c_oled_init);
-
-static void __exit i2c_oled_exit(void)
-{
-	pr_info(TAG "deinitialize\n");
-	// i2c_driver_exit();
-}
-module_exit(i2c_oled_exit);
-
-MODULE_AUTHOR("jarsulk, PCO");
+MODULE_AUTHOR("jarsulk, p2119, PCO");
 MODULE_DESCRIPTION("I.MX 8M Plus DSI - Crosslink - OLED driver");
 MODULE_LICENSE("GPL");
