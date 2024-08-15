@@ -54,15 +54,18 @@ strings arch/arm64/boot/Image | grep 'Linux version'
 cat include/config/kernel.release
 cat include/generated/utsrelease.h
 
-# git
-git diff HEAD > 0000-kernel-dsi-pd23.1.1.patc0
-#git diff > 0001-patch1.patch
-#git diff --cached > 0001-patch1.patch  # changes not in index
+# git apply patch
+git apply 0001-kernel-dsi-pd23.1.1.patch
 
+# git prepare patch - not use
+git diff HEAD > 0001-kernel-dsi-pd23.1.1.patch
+# git diff > 0001-patch1.patch
+# git diff --cached > 0001-patch1.patch  # changes not in index
+
+# git remove modified files by patch - not use
 git reset --hard
-git apply 0000-kernel-dsi-pd23.1.1.patc0
 
-	# Linux
+# Linux
 depmod   # recreate modules dependency list
 reboot
 # kernel wczytuje driver automatycznie na starcie jeśli jest w Device Tree

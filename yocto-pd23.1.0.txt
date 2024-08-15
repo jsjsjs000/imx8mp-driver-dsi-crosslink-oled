@@ -18,13 +18,23 @@ cd ~/phyLinux/sources/meta-phytec/
 git apply 0001-yocto-source-dsi-pd23.1.0.patch
 cd -
 
+	# git prepare patch - not use
+git diff --cached > 0001-kernel-dsi-pd23.1.0.patch
+git diff --cached > 0001-yocto-source-dsi-pd23.1.0.patch
+
+# git diff > 0001-patch1.patch
+# git diff HEAD > 0001-patch1.patch
+
+	# git remove modified files by patch - not use
+git reset --hard
+
 	# initialize Yocto
 cd ~/phyLinux
 source sources/poky/oe-init-build-env
 
 	# compile and deploy kernel
 bitbake linux-imx -c compile -f -c deploy
-# bitbake linux-imx -c compile -f && bitbake linux-imx -c deploy
+#> I.MX 8M Plus DSI - Crosslink - OLED driver (IMX8MP_DSI_CROSSLINK_OLED) [M/n/y/?] (NEW) - Enter
 
 	# list output files
 ll tmp/work/phyboard_pollux_imx8mp_3-phytec-linux/linux-imx/5.15.71-r0.0/linux-imx-5.15.71/arch/arm64/boot/Image
@@ -74,11 +84,12 @@ reset
 
 	# i.MX Linux - remove imx8mp-phyboard-pollux-peb-av-010.dtbo overlay
 vi /boot/bootenv.txt
-# ----------------------------------------
+# -------------------- remove or comment out --------------------
 # overlays=imx8mp-phyboard-pollux-peb-av-010.dtbo
 # ----------------------------------------
 
 	# display DSI logs
+# OLED I2C4: 0x0e, 0x0f
 dmesg | grep -i dsi
 dmesg | grep -i dsi_oled_driver
 dmesg | grep -i i2c
@@ -87,13 +98,18 @@ dmesg | grep -i i2c
 cat /proc/device-tree/soc\@0/bus\@32c00000/mipi_dsi\@32e60000/status
 cat /proc/device-tree/soc\@0/bus\@32c00000/lcd-controller\@32e80000/status
 
+cat /sys/bus/i2c/devices/3-000e/name
+#> i2c_oled_svga060
+
 	# optional
 depmod
 modprobe imx8mp-dsi-crosslink-oled
 modprobe -r imx8mp-dsi-crosslink-oled
 modprobe imx8mp-i2c-oled
 modprobe -r imx8mp-i2c-oled
+
 i2cdetect -y 3
+#> 0e, 0f as UU
 
 # usefull aliases
 alias co='bitbake linux-imx -c compile -f -c deploy'
@@ -107,17 +123,20 @@ alias re='ssh root@192.168.3.11 reboot'
 	# Manual modify Yocto Kernel and sources
 
 	# add new driver to kernel configuration
-bitbake linux-imx -c menuconfig
-#> Device Drivers > Graphics support (?)
+compile Kernel and set CONFIG_IMX8MP_DSI_CROSSLINK_OLED=y
 
 	# or
-nano ~/phyLinux/build/tmp/work/phyboard_pollux_imx8mp_3-phytec-linux/linux-imx/5.15.71-r0.0/linux-imx-5.15.71/.config
+# bitbake linux-imx -c menuconfig
+# #> Device Drivers > Graphics support (?)
+
+	# or
+# nano ~/phyLinux/build/tmp/work/phyboard_pollux_imx8mp_3-phytec-linux/linux-imx/5.15.71-r0.0/linux-imx-5.15.71/.config
 # nano ~/phyLinux/build/linux-imx/.config.baseline
 # nano ~/phyLinux/build/linux-imx/.config.new
 # ---------------------------------------------------------
 # Graphics support
 # ...
-CONFIG_IMX8MP_DSI_CROSSLINK_OLED=y
+# CONFIG_IMX8MP_DSI_CROSSLINK_OLED=y
 # ---------------------------------------------------------
 
 # check is module enabled in .config
@@ -126,19 +145,19 @@ cat ~/phyLinux/build/tmp/work/phyboard_pollux_imx8mp_3-phytec-linux/linux-imx/5.
 
 mkdir -p ~/phyLinux/build/linux-imx/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/
 cd ~/imx8mp-driver-dsi-crosslink-oled/
-cp kernel-driver/imx8mp-dsi-crosslink-oled-i2c.{c,h} ~/phyLinux/build/linux-imx/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/
-cp kernel-driver/imx8mp-dsi-crosslink-oled-main.c kernel-driver/Makefile ~/phyLinux/build/linux-imx/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/
+cp kernel-driver/imx8mp-i2c-oled.c ~/phyLinux/build/linux-imx/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/
+cp kernel-driver/imx8mp-dsi-crosslink-oled.c kernel-driver/Makefile ~/phyLinux/build/linux-imx/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/
 cd -
 
 nano drivers/gpu/drm/bridge/Makefile
 # ---------------------------------------------------------
-obj-$(CONFIG_IMX8MP_DSI_CROSSLINK_OLED) += imx8mp-dsi-crosslink-oled/
+obj-y += imx8mp-dsi-crosslink-oled/
 # ---------------------------------------------------------
 
 nano drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/Makefile
 # ---------------------------------------------------------
-imx8mp-dsi-crosslink-oled-objs := imx8mp-dsi-crosslink-oled-main.o imx8mp-dsi-crosslink-oled-i2c.o
 obj-$(CONFIG_IMX8MP_DSI_CROSSLINK_OLED) += imx8mp-dsi-crosslink-oled.o
+obj-$(CONFIG_IMX8MP_DSI_CROSSLINK_OLED) += imx8mp-i2c-oled.o
 # ---------------------------------------------------------
 
 nano drivers/gpu/drm/bridge/Kconfig
@@ -160,6 +179,10 @@ nano linux-imx/arch/arm64/boot/dts/freescale/overlays/imx8mp-dsi-crosslink-oled.
 
 /dts-v1/;
 /plugin/;
+
+#include <dt-bindings/clock/imx8mp-clock.h>
+#include <dt-bindings/gpio/gpio.h>
+#include "../imx8mp-pinfunc.h"
 
 / {
 	compatible = "phytec,imx8mp-phyboard-pollux";
@@ -227,12 +250,47 @@ nano linux-imx/arch/arm64/boot/dts/freescale/overlays/imx8mp-dsi-crosslink-oled.
 &ldb_phy {
 	status = "disabled";
 };
+
+/* I2C4 OLED SVGA060 */
+&i2c4 {
+	#address-cells = <1>;
+	#size-cells = <0>;
+
+	clock-frequency = <100000>;
+	pinctrl-names = "default","gpio";
+	pinctrl-0 = <&pinctrl_i2c4>;
+	pinctrl-1 = <&pinctrl_i2c4_gpio>;
+	scl-gpios = <&gpio5 20 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
+	sda-gpios = <&gpio5 21 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
+	status = "okay";
+
+	oled_left@0e {
+		compatible = "pco,i2c_oled_svga060";
+		reg = <0x0e>;
+		status = "okay";
+	};
+
+	oled_right@0f {
+		compatible = "pco,i2c_oled_svga060";
+		reg = <0x0f>;
+		status = "okay";
+	};
+};
+
+/* I2C4 GPIO OLED SVGA060 */
+&iomuxc {
+	pinctrl_i2c4: i2c4grp {
+		fsl,pins = <
+			MX8MP_IOMUXC_I2C4_SCL__I2C4_SCL			0x400001c3
+			MX8MP_IOMUXC_I2C4_SDA__I2C4_SDA			0x400001c3
+		>;
+	};
+
+	pinctrl_i2c4_gpio: i2c4gpiogrp {
+		fsl,pins = <
+			MX8MP_IOMUXC_I2C4_SCL__GPIO5_IO20		0x1c3
+			MX8MP_IOMUXC_I2C4_SDA__GPIO5_IO21		0x1c3
+		>;
+	};
+};
 # ---------------------------------------------------------
-
-
-
-
-I2C4: 0x0e, 0x0f
-
-cat /sys/bus/i2c/devices/3-000e/name
-#> i2c_oled_svga060

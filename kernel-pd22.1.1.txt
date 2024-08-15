@@ -25,8 +25,8 @@ echo "fdt_file=imx8mp-phyboard-pollux-rdk.dtb" >> /boot/bootenv.txt
 reboot
 
 # copy and apply patch for DSI
-cp ~/imx8mp-driver-dsi-crosslink-oled/patches/0000-kernel-dsi-pd22.1.1.patch .
-git apply 0000-kernel-dsi-pd22.1.1.patch
+cp ~/imx8mp-driver-dsi-crosslink-oled/patches/0001-kernel-dsi-pd22.1.1.patch .
+git apply 0001-kernel-dsi-pd22.1.1.patch
 
 # compile Kernel
 make -j $(nproc) LOCALVERSION="-bsp-yocto-nxp-i.mx8mp-pd22.1.1" EXTRAVERSION=""
