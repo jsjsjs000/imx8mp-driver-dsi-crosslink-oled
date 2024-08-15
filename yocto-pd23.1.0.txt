@@ -7,20 +7,26 @@ cd imx8mp-driver-dsi-crosslink-oled/
 devtool modify -x linux-imx linux-imx
 bitbake phytec-qt6demo-image
 
-	# apply patches
+	# apply patches to Yocto Kernel
 cp patches/0001-yocto-kernel-dsi-pd23.1.0.patch ~/phyLinux/build/linux-imx/
 cd ~/phyLinux/build/linux-imx/
 git apply 0001-yocto-kernel-dsi-pd23.1.0.patch
 cd -
 
+	# apply patches to Yocto sources
 cp patches/0001-yocto-source-dsi-pd23.1.0.patch ~/phyLinux/build/
 cd ~/phyLinux/sources/meta-phytec/
 git apply 0001-yocto-source-dsi-pd23.1.0.patch
 cd -
 
-	# git prepare patch - not use
-git diff --cached > 0001-kernel-dsi-pd23.1.0.patch
+	# git prepare patches - not use
+cd ~/phyLinux/build/linux-imx/
+git diff --cached > 0001-yocto-kernel-dsi-pd23.1.0.patch
+cd -
+
+cd ~/phyLinux/sources/meta-phytec/
 git diff --cached > 0001-yocto-source-dsi-pd23.1.0.patch
+cd -
 
 # git diff > 0001-patch1.patch
 # git diff HEAD > 0001-patch1.patch
@@ -102,7 +108,9 @@ cat /sys/bus/i2c/devices/3-000e/name
 #> i2c_oled_svga060
 
 	# optional
-depmod
+depmod   # reindex modules database
+reboot
+
 modprobe imx8mp-dsi-crosslink-oled
 modprobe -r imx8mp-dsi-crosslink-oled
 modprobe imx8mp-i2c-oled

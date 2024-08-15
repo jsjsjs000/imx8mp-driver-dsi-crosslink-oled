@@ -122,12 +122,6 @@ index 000000000000..66e2f6bc53fb
 +		>;
 +	};
 +};
-diff --git a/drivers/dma/fsl-dpaa2-qdma/dpaa2-qdma.c b/drivers/dma/fsl-dpaa2-qdma/dpaa2-qdma.c
-old mode 100755
-new mode 100644
-diff --git a/drivers/firmware/imx/scu-pd.c b/drivers/firmware/imx/scu-pd.c
-old mode 100755
-new mode 100644
 diff --git a/drivers/gpu/drm/bridge/Kconfig b/drivers/gpu/drm/bridge/Kconfig
 index 3d81471f89d3..c1f228127ca2 100644
 --- a/drivers/gpu/drm/bridge/Kconfig
@@ -533,10 +527,10 @@ index 000000000000..017dde452956
 +*/
 diff --git a/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/imx8mp-i2c-oled.c b/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/imx8mp-i2c-oled.c
 new file mode 100644
-index 000000000000..b190044333d1
+index 000000000000..d60acaf43c3e
 --- /dev/null
 +++ b/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/imx8mp-i2c-oled.c
-@@ -0,0 +1,169 @@
+@@ -0,0 +1,178 @@
 +// SPDX-License-Identifier: GPL-2.0
 +
 +#include <linux/delay.h>
@@ -706,9 +700,12 @@ index 000000000000..b190044333d1
 +MODULE_AUTHOR("jarsulk, p2119, PCO");
 +MODULE_DESCRIPTION("I.MX 8M Plus DSI - Crosslink - OLED driver");
 +MODULE_LICENSE("GPL");
-diff --git a/include/uapi/linux/hx280enc.h b/include/uapi/linux/hx280enc.h
-old mode 100755
-new mode 100644
-diff --git a/sound/soc/fsl/fsl_easrc_m2m.c b/sound/soc/fsl/fsl_easrc_m2m.c
-old mode 100755
-new mode 100644
++
++/*
++https://github.com/Johannes4Linux/Linux_Driver_Tutorial/tree/main/22_dt_i2c
++https://www.youtube.com/watch?v=GQ1XwFWA2Nw
++https://github.com/Johannes4Linux/Linux_Driver_Tutorial/tree/main/36_i2c_driver
++https://krinkinmu.github.io/2020/07/12/linux-kernel-modules.html
++https://docs.kernel.org/i2c/instantiating-devices.html
++https://www.kernel.org/doc/Documentation/devicetree/bindings/i2c/i2c.txt
++*/
