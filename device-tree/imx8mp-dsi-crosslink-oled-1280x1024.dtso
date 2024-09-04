@@ -39,15 +39,17 @@
 
 		display-timings {
 			lcd {
-				clock-frequency = <40000000>;
-				hactive = <800>;
-				vactive = <600>;
-				hback-porch = <88>;
-				hfront-porch = <40>;
-				vback-porch = <23>;
+					/* SXGA060 1280x1024 */
+				clock-frequency = <108000000>;
+				hactive = <1280>;
+				vactive = <1024>;
 				vfront-porch = <1>;
-				hsync-len = <128>;
-				vsync-len = <4>;
+				vsync-len = <3>;
+				vback-porch = <38>;
+				hfront-porch = <48>;
+				hsync-len = <112>;
+				hback-porch = <248>;
+
 				hsync-active = <0>;
 				vsync-active = <0>;
 				de-active = <1>;
@@ -74,7 +76,7 @@
 	status = "disabled";
 };
 
-/* I2C4 OLED SVGA060 */
+/* I2C4 OLED SVGA060/SXGA060 */
 &i2c4 {
 	#address-cells = <1>;
 	#size-cells = <0>;
@@ -88,13 +90,13 @@
 	status = "okay";
 
 	oled_left@0e {
-		compatible = "pco,i2c_oled_svga060";
+		compatible = "pco,i2c_oled_sxga060";
 		reg = <0x0e>;
 		status = "okay";
 	};
 
 	oled_right@0f {
-		compatible = "pco,i2c_oled_svga060";
+		compatible = "pco,i2c_oled_sxga060";
 		reg = <0x0f>;
 		status = "okay";
 	};

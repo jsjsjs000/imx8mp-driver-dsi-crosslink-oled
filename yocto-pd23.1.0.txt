@@ -48,9 +48,11 @@ bitbake linux-imx -c compile -f -c deploy
 	# list output files
 ll tmp/work/phyboard_pollux_imx8mp_3-phytec-linux/linux-imx/5.15.71-r0.0/linux-imx-5.15.71/arch/arm64/boot/Image
 ll tmp/work/phyboard_pollux_imx8mp_3-phytec-linux/linux-imx/5.15.71-r0.0/linux-imx-5.15.71/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dtb
-ll tmp/work/phyboard_pollux_imx8mp_3-phytec-linux/linux-imx/5.15.71-r0.0/linux-imx-5.15.71/arch/arm64/boot/dts/freescale/overlays/imx8mp-dsi-crosslink-oled.dtbo
+ll tmp/work/phyboard_pollux_imx8mp_3-phytec-linux/linux-imx/5.15.71-r0.0/linux-imx-5.15.71/arch/arm64/boot/dts/freescale/overlays/imx8mp-dsi-crosslink-oled-800x600.dtbo
+ll tmp/work/phyboard_pollux_imx8mp_3-phytec-linux/linux-imx/5.15.71-r0.0/linux-imx-5.15.71/arch/arm64/boot/dts/freescale/overlays/imx8mp-dsi-crosslink-oled-1280x1024.dtbo
 ll tmp/work/phyboard_pollux_imx8mp_3-phytec-linux/linux-imx/5.15.71-r0.0/image/lib/modules/5.15.71-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/imx8mp-dsi-crosslink-oled.ko
-ll tmp/work/phyboard_pollux_imx8mp_3-phytec-linux/linux-imx/5.15.71-r0.0/image/lib/modules/5.15.71-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/imx8mp-i2c-oled.ko
+ll tmp/work/phyboard_pollux_imx8mp_3-phytec-linux/linux-imx/5.15.71-r0.0/image/lib/modules/5.15.71-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/imx8mp-i2c-oled-800x600.ko
+ll tmp/work/phyboard_pollux_imx8mp_3-phytec-linux/linux-imx/5.15.71-r0.0/image/lib/modules/5.15.71-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/imx8mp-i2c-oled-1280x1024.ko
 
 	# send output files to i.MX via SSH
 # send to i.MX: Image
@@ -59,15 +61,17 @@ scp tmp/work/phyboard_pollux_imx8mp_3-phytec-linux/linux-imx/5.15.71-r0.0/linux-
 # send to i.MX: imx8mp-phyboard-pollux-rdk.dtb
 scp tmp/work/phyboard_pollux_imx8mp_3-phytec-linux/linux-imx/5.15.71-r0.0/linux-imx-5.15.71/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dtb root@192.168.3.11:/boot/
 
-# send to i.MX: imx8mp-dsi-crosslink-oled.dtbo
-scp tmp/work/phyboard_pollux_imx8mp_3-phytec-linux/linux-imx/5.15.71-r0.0/linux-imx-5.15.71/arch/arm64/boot/dts/freescale/overlays/imx8mp-dsi-crosslink-oled.dtbo root@192.168.3.11:/boot/
+# send to i.MX: imx8mp-dsi-crosslink-oled-800x600.dtbo, imx8mp-dsi-crosslink-oled-1280x1024.dtbo
+scp tmp/work/phyboard_pollux_imx8mp_3-phytec-linux/linux-imx/5.15.71-r0.0/linux-imx-5.15.71/arch/arm64/boot/dts/freescale/overlays/imx8mp-dsi-crosslink-oled-800x600.dtbo root@192.168.3.11:/boot/
+scp tmp/work/phyboard_pollux_imx8mp_3-phytec-linux/linux-imx/5.15.71-r0.0/linux-imx-5.15.71/arch/arm64/boot/dts/freescale/overlays/imx8mp-dsi-crosslink-oled-1280x1024.dtbo root@192.168.3.11:/boot/
 
 # send to i.MX: imx8mp-dsi-crosslink-oled.ko
 ssh root@192.168.3.11 mkdir -p /lib/modules/5.15.71-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/
 scp tmp/work/phyboard_pollux_imx8mp_3-phytec-linux/linux-imx/5.15.71-r0.0/image/lib/modules/5.15.71-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/imx8mp-dsi-crosslink-oled.ko root@192.168.3.11:/lib/modules/5.15.71-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/
 
-# send to i.MX: imx8mp-i2c-oled.ko
-scp tmp/work/phyboard_pollux_imx8mp_3-phytec-linux/linux-imx/5.15.71-r0.0/image/lib/modules/5.15.71-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/imx8mp-i2c-oled.ko root@192.168.3.11:/lib/modules/5.15.71-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/
+# send to i.MX: imx8mp-i2c-oled-800x600.ko, imx8mp-i2c-oled-1280x1024.ko
+scp tmp/work/phyboard_pollux_imx8mp_3-phytec-linux/linux-imx/5.15.71-r0.0/image/lib/modules/5.15.71-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/imx8mp-i2c-oled-800x600.ko root@192.168.3.11:/lib/modules/5.15.71-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/
+scp tmp/work/phyboard_pollux_imx8mp_3-phytec-linux/linux-imx/5.15.71-r0.0/image/lib/modules/5.15.71-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/imx8mp-i2c-oled-1280x1024.ko root@192.168.3.11:/lib/modules/5.15.71-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/
 
 	# or write files to SD card:
 # write to SD card: Image
@@ -76,8 +80,9 @@ cp tmp/work/phyboard_pollux_imx8mp_3-phytec-linux/linux-imx/5.15.71-r0.0/linux-i
 # write to SD card: imx8mp-phyboard-pollux-rdk.dtb
 cp tmp/work/phyboard_pollux_imx8mp_3-phytec-linux/linux-imx/5.15.71-r0.0/linux-imx-5.15.71/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dtb /media/$USER/boot/
 
-# send to i.MX: imx8mp-dsi-crosslink-oled.ko
-cp tmp/work/phyboard_pollux_imx8mp_3-phytec-linux/linux-imx/5.15.71-r0.0/linux-imx-5.15.71/arch/arm64/boot/dts/freescale/overlays/imx8mp-dsi-crosslink-oled.dtbo /media/$USER/boot/
+# send to i.MX: imx8mp-dsi-crosslink-oled-800x600.dtbo, imx8mp-dsi-crosslink-oled-1280x1024.dtbo
+cp tmp/work/phyboard_pollux_imx8mp_3-phytec-linux/linux-imx/5.15.71-r0.0/linux-imx-5.15.71/arch/arm64/boot/dts/freescale/overlays/imx8mp-dsi-crosslink-oled-800x600.dtbo /media/$USER/boot/
+cp tmp/work/phyboard_pollux_imx8mp_3-phytec-linux/linux-imx/5.15.71-r0.0/linux-imx-5.15.71/arch/arm64/boot/dts/freescale/overlays/imx8mp-dsi-crosslink-oled-1280x1024.dtbo /media/$USER/boot/
 
 # write to SD card: imx8mp-dsi-crosslink-oled.ko and imx8mp-i2c-oled.ko
 sudo mkdir -p /media/$USER/root/lib/modules/5.15.71-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/
@@ -89,7 +94,8 @@ sync; umount /media/$USER/boot; umount /media/$USER/root
 	# U-boot
 setenv bootdelay 0
 setenv fdt_file imx8mp-phyboard-pollux-rdk.dtb
-setenv overlays imx8mp-dsi-crosslink-oled.dtbo
+#setenv overlays imx8mp-dsi-crosslink-oled-800x600.dtbo
+setenv overlays imx8mp-dsi-crosslink-oled-1280x1024.dtbo
 saveenv
 reset
 
@@ -107,10 +113,13 @@ dmesg | grep -i i2c
 
 	# check DSI in Device Tree
 cat /proc/device-tree/soc\@0/bus\@32c00000/mipi_dsi\@32e60000/status
+#> ok
 cat /proc/device-tree/soc\@0/bus\@32c00000/lcd-controller\@32e80000/status
+#> ok
 
 cat /sys/bus/i2c/devices/3-000e/name
 #> i2c_oled_svga060
+#> i2c_oled_sxga060
 
 	# optional
 depmod   # reindex modules database
@@ -118,18 +127,39 @@ reboot
 
 modprobe imx8mp-dsi-crosslink-oled
 modprobe -r imx8mp-dsi-crosslink-oled
-modprobe imx8mp-i2c-oled
-modprobe -r imx8mp-i2c-oled
+modprobe imx8mp-i2c-oled-800x600
+modprobe -r imx8mp-i2c-oled-800x600
+modprobe imx8mp-i2c-oled-1280x1024
+modprobe -r imx8mp-i2c-oled-1280x1024
 
 i2cdetect -y 3
 #> 0e, 0f as UU
 
 # usefull aliases
 alias co='bitbake linux-imx -c compile -f -c deploy'
-alias lll='ll tmp/work/phyboard_pollux_imx8mp_3-phytec-linux/linux-imx/5.15.71-r0.0/linux-imx-5.15.71/arch/arm64/boot/Image; ll tmp/work/phyboard_pollux_imx8mp_3-phytec-linux/linux-imx/5.15.71-r0.0/linux-imx-5.15.71/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dtb; ll tmp/work/phyboard_pollux_imx8mp_3-phytec-linux/linux-imx/5.15.71-r0.0/linux-imx-5.15.71/arch/arm64/boot/dts/freescale/overlays/imx8mp-dsi-crosslink-oled.dtbo; ll tmp/work/phyboard_pollux_imx8mp_3-phytec-linux/linux-imx/5.15.71-r0.0/image/lib/modules/5.15.71-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/imx8mp-dsi-crosslink-oled.ko; ll tmp/work/phyboard_pollux_imx8mp_3-phytec-linux/linux-imx/5.15.71-r0.0/image/lib/modules/5.15.71-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/imx8mp-i2c-oled.ko'
-alias up='scp tmp/work/phyboard_pollux_imx8mp_3-phytec-linux/linux-imx/5.15.71-r0.0/linux-imx-5.15.71/arch/arm64/boot/Image root@192.168.3.11:/boot/; scp tmp/work/phyboard_pollux_imx8mp_3-phytec-linux/linux-imx/5.15.71-r0.0/linux-imx-5.15.71/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dtb root@192.168.3.11:/boot/; scp tmp/work/phyboard_pollux_imx8mp_3-phytec-linux/linux-imx/5.15.71-r0.0/linux-imx-5.15.71/arch/arm64/boot/dts/freescale/overlays/imx8mp-dsi-crosslink-oled.dtbo root@192.168.3.11:/boot/; ssh root@192.168.3.11 mkdir -p /lib/modules/5.15.71-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/
-; scp tmp/work/phyboard_pollux_imx8mp_3-phytec-linux/linux-imx/5.15.71-r0.0/image/lib/modules/5.15.71-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/imx8mp-dsi-crosslink-oled.ko root@192.168.3.11:/lib/modules/5.15.71-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/; scp tmp/work/phyboard_pollux_imx8mp_3-phytec-linux/linux-imx/5.15.71-r0.0/image/lib/modules/5.15.71-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/imx8mp-i2c-oled.ko root@192.168.3.11:/lib/modules/5.15.71-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/'
-alias cpsd='cp tmp/work/phyboard_pollux_imx8mp_3-phytec-linux/linux-imx/5.15.71-r0.0/linux-imx-5.15.71/arch/arm64/boot/Image /media/$USER/boot/; cp tmp/work/phyboard_pollux_imx8mp_3-phytec-linux/linux-imx/5.15.71-r0.0/linux-imx-5.15.71/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dtb /media/$USER/boot/; sudo mkdir -p /media/$USER/root/lib/modules/5.15.71-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/; cp tmp/work/phyboard_pollux_imx8mp_3-phytec-linux/linux-imx/5.15.71-r0.0/linux-imx-5.15.71/arch/arm64/boot/dts/freescale/overlays/imx8mp-dsi-crosslink-oled.dtbo /media/$USER/boot/; sudo cp tmp/work/phyboard_pollux_imx8mp_3-phytec-linux/linux-imx/5.15.71-r0.0/image/lib/modules/5.15.71-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/imx8mp-dsi-crosslink-oled.ko /media/$USER/root/lib/modules/5.15.71-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/; sudo cp tmp/work/phyboard_pollux_imx8mp_3-phytec-linux/linux-imx/5.15.71-r0.0/image/lib/modules/5.15.71-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/imx8mp-i2c-oled.ko /media/$USER/root/lib/modules/5.15.71-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/'
+alias lll='ll tmp/work/phyboard_pollux_imx8mp_3-phytec-linux/linux-imx/5.15.71-r0.0/linux-imx-5.15.71/arch/arm64/boot/Image; \
+  ll tmp/work/phyboard_pollux_imx8mp_3-phytec-linux/linux-imx/5.15.71-r0.0/linux-imx-5.15.71/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dtb; \
+  ll tmp/work/phyboard_pollux_imx8mp_3-phytec-linux/linux-imx/5.15.71-r0.0/linux-imx-5.15.71/arch/arm64/boot/dts/freescale/overlays/imx8mp-dsi-crosslink-oled-800x600.dtbo; \
+  ll tmp/work/phyboard_pollux_imx8mp_3-phytec-linux/linux-imx/5.15.71-r0.0/linux-imx-5.15.71/arch/arm64/boot/dts/freescale/overlays/imx8mp-dsi-crosslink-oled-1280x1024.dtbo; \
+  ll tmp/work/phyboard_pollux_imx8mp_3-phytec-linux/linux-imx/5.15.71-r0.0/image/lib/modules/5.15.71-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/imx8mp-dsi-crosslink-oled.ko; \
+  ll tmp/work/phyboard_pollux_imx8mp_3-phytec-linux/linux-imx/5.15.71-r0.0/image/lib/modules/5.15.71-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/imx8mp-i2c-oled-800x600.ko; \
+  ll tmp/work/phyboard_pollux_imx8mp_3-phytec-linux/linux-imx/5.15.71-r0.0/image/lib/modules/5.15.71-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/imx8mp-i2c-oled-1280x1024.ko'
+alias up='scp tmp/work/phyboard_pollux_imx8mp_3-phytec-linux/linux-imx/5.15.71-r0.0/linux-imx-5.15.71/arch/arm64/boot/Image root@192.168.3.11:/boot/; \
+  scp tmp/work/phyboard_pollux_imx8mp_3-phytec-linux/linux-imx/5.15.71-r0.0/linux-imx-5.15.71/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dtb root@192.168.3.11:/boot/; \
+  scp tmp/work/phyboard_pollux_imx8mp_3-phytec-linux/linux-imx/5.15.71-r0.0/linux-imx-5.15.71/arch/arm64/boot/dts/freescale/overlays/imx8mp-dsi-crosslink-oled-800x600.dtbo root@192.168.3.11:/boot/; \
+  scp tmp/work/phyboard_pollux_imx8mp_3-phytec-linux/linux-imx/5.15.71-r0.0/linux-imx-5.15.71/arch/arm64/boot/dts/freescale/overlays/imx8mp-dsi-crosslink-oled-1280x1024.dtbo root@192.168.3.11:/boot/; \
+  ssh root@192.168.3.11 mkdir -p /lib/modules/5.15.71-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/; \
+  scp tmp/work/phyboard_pollux_imx8mp_3-phytec-linux/linux-imx/5.15.71-r0.0/image/lib/modules/5.15.71-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/imx8mp-dsi-crosslink-oled.ko root@192.168.3.11:/lib/modules/5.15.71-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/; \
+  scp tmp/work/phyboard_pollux_imx8mp_3-phytec-linux/linux-imx/5.15.71-r0.0/image/lib/modules/5.15.71-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/imx8mp-i2c-oled-800x600.ko root@192.168.3.11:/lib/modules/5.15.71-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/; \
+  scp tmp/work/phyboard_pollux_imx8mp_3-phytec-linux/linux-imx/5.15.71-r0.0/image/lib/modules/5.15.71-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/imx8mp-i2c-oled-1280x1024.ko root@192.168.3.11:/lib/modules/5.15.71-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/'
+alias cpsd='cp tmp/work/phyboard_pollux_imx8mp_3-phytec-linux/linux-imx/5.15.71-r0.0/linux-imx-5.15.71/arch/arm64/boot/Image /media/$USER/boot/; \
+  cp tmp/work/phyboard_pollux_imx8mp_3-phytec-linux/linux-imx/5.15.71-r0.0/linux-imx-5.15.71/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dtb /media/$USER/boot/; \
+  sudo mkdir -p /media/$USER/root/lib/modules/5.15.71-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/; \
+  cp tmp/work/phyboard_pollux_imx8mp_3-phytec-linux/linux-imx/5.15.71-r0.0/linux-imx-5.15.71/arch/arm64/boot/dts/freescale/overlays/imx8mp-dsi-crosslink-oled-800x600.dtbo /media/$USER/boot/; \
+  cp tmp/work/phyboard_pollux_imx8mp_3-phytec-linux/linux-imx/5.15.71-r0.0/linux-imx-5.15.71/arch/arm64/boot/dts/freescale/overlays/imx8mp-dsi-crosslink-oled-1280x1024.dtbo /media/$USER/boot/; \
+  sudo cp tmp/work/phyboard_pollux_imx8mp_3-phytec-linux/linux-imx/5.15.71-r0.0/image/lib/modules/5.15.71-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/imx8mp-dsi-crosslink-oled.ko /media/$USER/root/lib/modules/5.15.71-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/; \
+  sudo cp tmp/work/phyboard_pollux_imx8mp_3-phytec-linux/linux-imx/5.15.71-r0.0/image/lib/modules/5.15.71-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/imx8mp-i2c-oled-800x600.ko /media/$USER/root/lib/modules/5.15.71-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/; \
+  sudo cp tmp/work/phyboard_pollux_imx8mp_3-phytec-linux/linux-imx/5.15.71-r0.0/image/lib/modules/5.15.71-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/imx8mp-i2c-oled-1280x1024.ko /media/$USER/root/lib/modules/5.15.71-bsp-yocto-nxp-i.mx8mp-pd23.1.0/kernel/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/'
 alias re='ssh root@192.168.3.11 reboot'
 
 
@@ -159,8 +189,9 @@ cat ~/phyLinux/build/tmp/work/phyboard_pollux_imx8mp_3-phytec-linux/linux-imx/5.
 
 mkdir -p ~/phyLinux/build/linux-imx/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/
 cd $repo_path/$repo_dir
-cp kernel-driver/imx8mp-i2c-oled.c ~/phyLinux/build/linux-imx/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/
 cp kernel-driver/imx8mp-dsi-crosslink-oled.c kernel-driver/Makefile ~/phyLinux/build/linux-imx/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/
+cp kernel-driver/imx8mp-i2c-oled-800x600.c kernel-driver/imx8mp-i2c-oled-1280x1024.c ~/phyLinux/build/linux-imx/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/
+cp device-tree/imx8mp-dsi-crosslink-oled-800x600.dtso device-tree/imx8mp-dsi-crosslink-oled-1280x1024.dtso ~/phyLinux/build/linux-imx/arch/arm64/boot/dts/freescale/overlays/
 cd -
 
 nano drivers/gpu/drm/bridge/Makefile
@@ -171,7 +202,8 @@ obj-y += imx8mp-dsi-crosslink-oled/
 nano drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/Makefile
 # ---------------------------------------------------------
 obj-$(CONFIG_IMX8MP_DSI_CROSSLINK_OLED) += imx8mp-dsi-crosslink-oled.o
-obj-$(CONFIG_IMX8MP_DSI_CROSSLINK_OLED) += imx8mp-i2c-oled.o
+obj-$(CONFIG_IMX8MP_DSI_CROSSLINK_OLED) += imx8mp-i2c-oled-800x600.o
+obj-$(CONFIG_IMX8MP_DSI_CROSSLINK_OLED) += imx8mp-i2c-oled-1280x1024.o
 # ---------------------------------------------------------
 
 nano drivers/gpu/drm/bridge/Kconfig
@@ -187,7 +219,8 @@ config IMX8MP_DSI_CROSSLINK_OLED
 	  I.MX 8M Plus DSI - Crosslink - OLED driver
 # ---------------------------------------------------------
 
-nano linux-imx/arch/arm64/boot/dts/freescale/overlays/imx8mp-dsi-crosslink-oled.dtso
+nano linux-imx/arch/arm64/boot/dts/freescale/overlays/imx8mp-dsi-crosslink-oled-800x600.dtso
+nano linux-imx/arch/arm64/boot/dts/freescale/overlays/imx8mp-dsi-crosslink-oled-1280x1024.dtso
 # ---------------------------------------------------------
 // SPDX-License-Identifier: (GPL-2.0+ OR MIT)
 
@@ -219,7 +252,8 @@ nano linux-imx/arch/arm64/boot/dts/freescale/overlays/imx8mp-dsi-crosslink-oled.
 	status = "okay";
 
 	panel-bridge@0 {
-		compatible = "pco,dsi_crosslink_oled_svga060";
+		// compatible = "pco,dsi_crosslink_oled_svga060";	/* SVGA060 800x600 */
+		compatible = "pco,dsi_crosslink_oled_sxga060";	/* SXGA060 1280x1024 */
 		reg = <0>;
 
 		port {
@@ -230,15 +264,28 @@ nano linux-imx/arch/arm64/boot/dts/freescale/overlays/imx8mp-dsi-crosslink-oled.
 
 		display-timings {
 			lcd {
+					/* SVGA060 800x600
 				clock-frequency = <40000000>;
 				hactive = <800>;
 				vactive = <600>;
-				hback-porch = <88>;
-				hfront-porch = <40>;
-				vback-porch = <23>;
 				vfront-porch = <1>;
-				hsync-len = <128>;
 				vsync-len = <4>;
+				vback-porch = <23>;
+				hfront-porch = <40>;
+				hsync-len = <128>;
+				hback-porch = <88>; */
+
+					/* SXGA060 1280x1024 */
+				clock-frequency = <108000000>;
+				hactive = <1280>;
+				vactive = <1024>;
+				vfront-porch = <1>;
+				vsync-len = <3>;
+				vback-porch = <38>;
+				hfront-porch = <48>;
+				hsync-len = <112>;
+				hback-porch = <248>;
+
 				hsync-active = <0>;
 				vsync-active = <0>;
 				de-active = <1>;

@@ -1,12 +1,13 @@
 diff --git a/conf/machine/phyboard-pollux-imx8mp-3.conf b/conf/machine/phyboard-pollux-imx8mp-3.conf
-index 2d26e7ad..0086c9ee 100644
+index 2d26e7ad..2dfcc1d9 100644
 --- a/conf/machine/phyboard-pollux-imx8mp-3.conf
 +++ b/conf/machine/phyboard-pollux-imx8mp-3.conf
-@@ -42,6 +42,7 @@ KERNEL_DEVICETREE = " \
+@@ -42,6 +42,8 @@ KERNEL_DEVICETREE = " \
          freescale/overlays/imx8mp-vm020-csi2.dtbo \
          freescale/overlays/imx8mp-vm020-csi2-fpdlink-port0.dtbo \
          freescale/overlays/imx8mp-vm020-csi2-fpdlink-port1.dtbo \
-+        freescale/overlays/imx8mp-dsi-crosslink-oled.dtbo \
++        freescale/overlays/imx8mp-dsi-crosslink-oled-800x600.dtbo \
++        freescale/overlays/imx8mp-dsi-crosslink-oled-1280x1024.dtbo \
  "
  
  # Set DDR FIRMWARE

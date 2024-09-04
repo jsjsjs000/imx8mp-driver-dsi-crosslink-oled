@@ -22,8 +22,6 @@
 #include <video/videomode.h>
 #include <video/of_videomode.h>
 
-#include "imx8mp-dsi-crosslink-oled-i2c.h"
-
 #define TAG "dsi_oled_driver: "
 
 // Panel for DRM

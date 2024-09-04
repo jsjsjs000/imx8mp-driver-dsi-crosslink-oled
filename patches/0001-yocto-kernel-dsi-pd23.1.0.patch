@@ -1,9 +1,9 @@
-diff --git a/arch/arm64/boot/dts/freescale/overlays/imx8mp-dsi-crosslink-oled.dtso b/arch/arm64/boot/dts/freescale/overlays/imx8mp-dsi-crosslink-oled.dtso
+diff --git a/arch/arm64/boot/dts/freescale/overlays/imx8mp-dsi-crosslink-oled-1280x1024.dtso b/arch/arm64/boot/dts/freescale/overlays/imx8mp-dsi-crosslink-oled-1280x1024.dtso
 new file mode 100644
-index 000000000000..66e2f6bc53fb
+index 000000000000..23453cdc2166
 --- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/overlays/imx8mp-dsi-crosslink-oled.dtso
-@@ -0,0 +1,118 @@
++++ b/arch/arm64/boot/dts/freescale/overlays/imx8mp-dsi-crosslink-oled-1280x1024.dtso
+@@ -0,0 +1,120 @@
 +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
 +
 +/dts-v1/;
@@ -45,15 +45,17 @@ index 000000000000..66e2f6bc53fb
 +
 +		display-timings {
 +			lcd {
-+				clock-frequency = <40000000>;
-+				hactive = <800>;
-+				vactive = <600>;
-+				hback-porch = <88>;
-+				hfront-porch = <40>;
-+				vback-porch = <23>;
++					/* SXGA060 1280x1024 */
++				clock-frequency = <108000000>;
++				hactive = <1280>;
++				vactive = <1024>;
 +				vfront-porch = <1>;
-+				hsync-len = <128>;
-+				vsync-len = <4>;
++				vsync-len = <3>;
++				vback-porch = <38>;
++				hfront-porch = <48>;
++				hsync-len = <112>;
++				hback-porch = <248>;
++
 +				hsync-active = <0>;
 +				vsync-active = <0>;
 +				de-active = <1>;
@@ -80,7 +82,133 @@ index 000000000000..66e2f6bc53fb
 +	status = "disabled";
 +};
 +
-+/* I2C4 OLED SVGA060 */
++/* I2C4 OLED SVGA060/SXGA060 */
++&i2c4 {
++	#address-cells = <1>;
++	#size-cells = <0>;
++
++	clock-frequency = <100000>;
++	pinctrl-names = "default","gpio";
++	pinctrl-0 = <&pinctrl_i2c4>;
++	pinctrl-1 = <&pinctrl_i2c4_gpio>;
++	scl-gpios = <&gpio5 20 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
++	sda-gpios = <&gpio5 21 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
++	status = "okay";
++
++	oled_left@0e {
++		compatible = "pco,i2c_oled_sxga060";
++		reg = <0x0e>;
++		status = "okay";
++	};
++
++	oled_right@0f {
++		compatible = "pco,i2c_oled_sxga060";
++		reg = <0x0f>;
++		status = "okay";
++	};
++};
++
++/* I2C4 GPIO OLED SVGA060 */
++&iomuxc {
++	pinctrl_i2c4: i2c4grp {
++		fsl,pins = <
++			MX8MP_IOMUXC_I2C4_SCL__I2C4_SCL			0x400001c3
++			MX8MP_IOMUXC_I2C4_SDA__I2C4_SDA			0x400001c3
++		>;
++	};
++
++	pinctrl_i2c4_gpio: i2c4gpiogrp {
++		fsl,pins = <
++			MX8MP_IOMUXC_I2C4_SCL__GPIO5_IO20		0x1c3
++			MX8MP_IOMUXC_I2C4_SDA__GPIO5_IO21		0x1c3
++		>;
++	};
++};
+diff --git a/arch/arm64/boot/dts/freescale/overlays/imx8mp-dsi-crosslink-oled-800x600.dtso b/arch/arm64/boot/dts/freescale/overlays/imx8mp-dsi-crosslink-oled-800x600.dtso
+new file mode 100644
+index 000000000000..2e74b17cec9c
+--- /dev/null
++++ b/arch/arm64/boot/dts/freescale/overlays/imx8mp-dsi-crosslink-oled-800x600.dtso
+@@ -0,0 +1,120 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
++
++/dts-v1/;
++/plugin/;
++
++#include <dt-bindings/clock/imx8mp-clock.h>
++#include <dt-bindings/gpio/gpio.h>
++#include "../imx8mp-pinfunc.h"
++
++/ {
++	compatible = "phytec,imx8mp-phyboard-pollux";
++};
++
++&lcdif2 {
++	status = "disabled";
++};
++
++&lcdif3 {
++	status = "disabled";
++};
++
++/* MIPI DSI */
++&lcdif1 {
++	status = "okay";
++};
++
++&mipi_dsi {
++	status = "okay";
++
++	panel-bridge@0 {
++		compatible = "pco,dsi_crosslink_oled_svga060";
++		reg = <0>;
++
++		port {
++			dsi_in: endpoint {
++				remote-endpoint = <&dsi_out>;
++			};
++		};
++
++		display-timings {
++			lcd {
++					/* SVGA060 800x600 */
++				clock-frequency = <40000000>;
++				hactive = <800>;
++				vactive = <600>;
++				vfront-porch = <1>;
++				vsync-len = <4>;
++				vback-porch = <23>;
++				hfront-porch = <40>;
++				hsync-len = <128>;
++				hback-porch = <88>;
++
++				hsync-active = <0>;
++				vsync-active = <0>;
++				de-active = <1>;
++				pixelclk-active = <0>;
++			};
++		};
++	};
++
++	port@1 {
++		reg = <1>;
++
++		dsi_out: endpoint {
++			remote-endpoint = <&dsi_in>;
++		};
++	};
++};
++
++/* disable LVDS1 */
++&ldb {
++	status = "disabled";
++};
++
++&ldb_phy {
++	status = "disabled";
++};
++
++/* I2C4 OLED SVGA060/SXGA060 */
 +&i2c4 {
 +	#address-cells = <1>;
 +	#size-cells = <0>;
@@ -152,19 +280,25 @@ index 0f93f88d1815..a8073dd91696 100644
 +obj-y += imx8mp-dsi-crosslink-oled/
 diff --git a/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/Makefile b/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/Makefile
 new file mode 100644
-index 000000000000..86eece04e4d1
+index 000000000000..b3e89fbe1a01
 --- /dev/null
 +++ b/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/Makefile
-@@ -0,0 +1,2 @@
+@@ -0,0 +1,3 @@
 +obj-$(CONFIG_IMX8MP_DSI_CROSSLINK_OLED) += imx8mp-dsi-crosslink-oled.o
-+obj-$(CONFIG_IMX8MP_DSI_CROSSLINK_OLED) += imx8mp-i2c-oled.o
++obj-$(CONFIG_IMX8MP_DSI_CROSSLINK_OLED) += imx8mp-i2c-oled-800x600.o
++obj-$(CONFIG_IMX8MP_DSI_CROSSLINK_OLED) += imx8mp-i2c-oled-1280x1024.o
 diff --git a/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/imx8mp-dsi-crosslink-oled.c b/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/imx8mp-dsi-crosslink-oled.c
 new file mode 100644
-index 000000000000..017dde452956
+index 000000000000..c72e4852ff16
 --- /dev/null
 +++ b/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/imx8mp-dsi-crosslink-oled.c
-@@ -0,0 +1,361 @@
+@@ -0,0 +1,360 @@
 +// SPDX-License-Identifier: GPL-2.0
++/*
++ * based on: drivers/gpu/drm/bridge/tc358867xbg.c
++ * and: drivers/gpu/drm/panel/panel-rpi-7inch.c
++ * and: drivers/gpu/drm/bridge/tc358767.c
++ */
 +
 +#include <linux/delay.h>
 +#include <linux/media-bus-format.h>
@@ -516,21 +650,15 @@ index 000000000000..017dde452956
 +}
 +module_exit(dsi_crosslink_exit);
 +
-+MODULE_AUTHOR("jarsulk, p2119, PCO");
++MODULE_AUTHOR("jarsulk, PCO");
 +MODULE_DESCRIPTION("I.MX 8M Plus DSI - Crosslink - OLED driver");
 +MODULE_LICENSE("GPL");
-+
-+/*
-+	based on: drivers/gpu/drm/bridge/tc358867xbg.c
-+	and: drivers/gpu/drm/panel/panel-rpi-7inch.c
-+	and: drivers/gpu/drm/bridge/tc358767.c
-+*/
-diff --git a/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/imx8mp-i2c-oled.c b/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/imx8mp-i2c-oled.c
+diff --git a/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/imx8mp-i2c-oled-1280x1024.c b/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/imx8mp-i2c-oled-1280x1024.c
 new file mode 100644
-index 000000000000..d60acaf43c3e
+index 000000000000..739974306cf8
 --- /dev/null
-+++ b/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/imx8mp-i2c-oled.c
-@@ -0,0 +1,178 @@
++++ b/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/imx8mp-i2c-oled-1280x1024.c
+@@ -0,0 +1,142 @@
 +// SPDX-License-Identifier: GPL-2.0
 +
 +#include <linux/delay.h>
@@ -544,7 +672,7 @@ index 000000000000..d60acaf43c3e
 +
 +#define TAG "i2c_oled_driver: "
 +
-+static void send_i2c(struct i2c_client *client, u8 reg, u8 value)
++static bool send_i2c(struct i2c_client *client, u8 reg, u8 value)
 +{
 +	int result = 0;
 +	char buffer[2];
@@ -553,28 +681,179 @@ index 000000000000..d60acaf43c3e
 +
 +	if (!client)
 +	{
-+		pr_err(TAG "client = null");
-+		return;
++		pr_err(TAG "Client = null");
++		return false;
 +	}
 +
 +	result = i2c_master_send(client, buffer, sizeof(buffer));
 +	if (result < 0)
 +	{
-+		pr_err(TAG "Failed to send I2C the data\n");
-+		return;
++		pr_err(TAG "Failed to send I2C the data: 0x%.2x 0x%.2x\n", buffer[0], buffer[1]);
++		return false;
 +	}
 +
 +	pr_info(TAG "I2C data sent successfully: 0x%.2x 0x%.2x\n", buffer[0], buffer[1]);
++	return true;
 +}
 +
 +static int i2c_driver_write_oled_registers(struct i2c_client *client)
 +{
-+	pr_info(TAG "write registers\n");
++	pr_info(TAG "Write registers\n");
++
++	send_i2c(client, 0x21, 0x93);  /// turn on screen, mirror H, mirror V
++	send_i2c(client, 0x01, 0x0f);  /// external sync with DE, sync active high
++	send_i2c(client, 0x32, 0xb0);  /// DAC control - temperature
++	send_i2c(client, 0x34, 0x00);  /// Vcom 0x0070
++	send_i2c(client, 0x35, 0x70);  /// Vcom 0x0070
++	send_i2c(client, 0x36, 0x18);  /// reserved - use the temperature sensor
++	send_i2c(client, 0x37, 0x32);  /// reserved - use the temperature sensor
++
++	return 0;
++}
++
++static const struct of_device_id i2c_of_match[] = {
++	{
++		.compatible = "pco,i2c_oled_sxga060"
++	},
++	{}
++};
++MODULE_DEVICE_TABLE(of, i2c_of_match);
++
++static struct i2c_device_id i2c_table[] = {
++  { "i2c_oled_driver", 0 },
++  {}
++};
++MODULE_DEVICE_TABLE(i2c, i2c_table);
++
++static int i2c_oled_probe(struct i2c_client *client, const struct i2c_device_id *id)
++{
++	pr_info(TAG "probe %x\n", client->addr);
++	i2c_driver_write_oled_registers(client);
++	return 0;
++}
++
++static int i2c_oled_remove(struct i2c_client *client)
++{
++	pr_info(TAG "remove\n");
++	return 0;
++}
++
++static struct i2c_driver i2c_oled_driver = {
++	.driver = {
++		.name = "i2c_oled_driver",
++		.of_match_table = i2c_of_match,
++	},
++  .id_table = i2c_table,
++	.probe = i2c_oled_probe,
++	.remove = i2c_oled_remove,
++};
++
++module_i2c_driver(i2c_oled_driver);
++
++MODULE_AUTHOR("jarsulk, p2119, PCO");
++MODULE_DESCRIPTION("I.MX 8M Plus DSI - Crosslink - OLED SXGA060 1280x1024 driver");
++MODULE_LICENSE("GPL");
++
++/*
++
++SXGA060 - 1280x1024
++# I2C: 0x0e - left
++# I2C: 0x0f - right
++
++i2cdetect -y 3  #I2C4
++
++# initialize left OLED
++i2cset -y 3 0x0e 0x21 0x93  # turn on screen, mirror H, mirror V
++i2cset -y 3 0x0e 0x01 0x0f  # external sync with DE, sync active high
++i2cset -y 3 0x0e 0x32 0xb0  # DAC control - temperature
++i2cset -y 3 0x0e 0x34 0x00  # Vcom 0x0070
++i2cset -y 3 0x0e 0x35 0x70  # Vcom 0x0070
++i2cset -y 3 0x0e 0x36 0x18  # reserved - use the temperature sensor
++i2cset -y 3 0x0e 0x37 0x32  # reserved - use the temperature sensor
++
++# initialize right OLED
++i2cset -y 3 0x0f 0x21 0x93  # turn on screen, mirror H, mirror V
++i2cset -y 3 0x0f 0x01 0x0f  # external sync with DE, sync active high
++i2cset -y 3 0x0f 0x32 0xb0  # DAC control - temperature
++i2cset -y 3 0x0f 0x34 0x00  # Vcom 0x0070
++i2cset -y 3 0x0f 0x35 0x70  # Vcom 0x0070
++i2cset -y 3 0x0f 0x36 0x18  # reserved - use the temperature sensor
++i2cset -y 3 0x0f 0x37 0x32  # reserved - use the temperature sensor
++
++# i2cset -y 3 0x0e 0x22 0x00  # margin left H
++# i2cset -y 3 0x0e 0x23 0x02  # margin left L    (1284 - 1280) / 2 = 2
++# i2cset -y 3 0x0e 0x24 0x00  # margin right H
++# i2cset -y 3 0x0e 0x25 0x02  # margin right L   (1284 - 1280) / 2 = 2
++# i2cset -y 3 0x0e 0x26 0x00  # margin top H
++# i2cset -y 3 0x0e 0x27 0x02  # margin top L     (1028 - 1024) / 2 = 2
++# i2cset -y 3 0x0e 0x28 0x00  # margin bottom H
++# i2cset -y 3 0x0e 0x29 0x02  # margin bottom L  (1028 - 1024) / 2 = 2
++
++# enable test screen - vertical color bar
++i2cset -y 3 0x0e 0x06 0x01
++i2cset -y 3 0x0f 0x06 0x01
++
++# disable test
++i2cset -y 3 0x0e 0x06 0x00
++i2cset -y 3 0x0f 0x06 0x00
++
++weston-terminal &
++weston-flower &
++
++*/
+\ No newline at end of file
+diff --git a/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/imx8mp-i2c-oled-800x600.c b/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/imx8mp-i2c-oled-800x600.c
+new file mode 100644
+index 000000000000..9f5b7ee1a216
+--- /dev/null
++++ b/drivers/gpu/drm/bridge/imx8mp-dsi-crosslink-oled/imx8mp-i2c-oled-800x600.c
+@@ -0,0 +1,227 @@
++// SPDX-License-Identifier: GPL-2.0
++
++#include <linux/delay.h>
++#include <linux/media-bus-format.h>
++#include <linux/module.h>
++#include <linux/of_platform.h>
++#include <linux/platform_device.h>
++#include <linux/delay.h>
++#include <linux/i2c.h>
++#include <linux/regulator/consumer.h>
++
++#define TAG "i2c_oled_driver: "
++
++static bool send_i2c(struct i2c_client *client, u8 reg, u8 value)
++{
++	int result = 0;
++	char buffer[2];
++	buffer[0] = reg;
++	buffer[1] = value;
++
++	if (!client)
++	{
++		pr_err(TAG "Client = null");
++		return false;
++	}
++
++	result = i2c_master_send(client, buffer, sizeof(buffer));
++	if (result < 0)
++	{
++		pr_err(TAG "Failed to send I2C the data: 0x%.2x 0x%.2x\n", buffer[0], buffer[1]);
++		return false;
++	}
++
++	pr_info(TAG "I2C data sent successfully: 0x%.2x 0x%.2x\n", buffer[0], buffer[1]);
++	return true;
++}
++
++static int i2c_driver_write_oled_registers(struct i2c_client *client)
++{
++	pr_info(TAG "Write registers\n");
 +
 +	send_i2c(client, 0x10, 0x00);  /// turn on screen
 +	send_i2c(client, 0x01, 0x34);  /// external sync with DE
 +	send_i2c(client, 0x02, 0x00);  /// sync active high
 +	send_i2c(client, 0x19, 0xb0);  /// Vcom level for temperature
++
 +	send_i2c(client, 0x20, 0x00);  /// start of gamma correction
 +	send_i2c(client, 0x21, 0x00);
 +	send_i2c(client, 0x22, 0x40);
@@ -629,14 +908,14 @@ index 000000000000..d60acaf43c3e
 +
 +static int i2c_oled_probe(struct i2c_client *client, const struct i2c_device_id *id)
 +{
-+	pr_info(TAG "probe OLED 0x%x\n", client->addr);
++	pr_info(TAG "probe %x\n", client->addr);
 +	i2c_driver_write_oled_registers(client);
 +	return 0;
 +}
 +
 +static int i2c_oled_remove(struct i2c_client *client)
 +{
-+	pr_info(TAG "remove OLED 0x%x\n", client->addr);
++	pr_info(TAG "remove\n");
 +	return 0;
 +}
 +
@@ -650,62 +929,110 @@ index 000000000000..d60acaf43c3e
 +	.remove = i2c_oled_remove,
 +};
 +
-+/*
-+int i2c_driver_init(void)
-+{
-+	pr_err(TAG "initialize\n");
-+
-+	adapter = i2c_get_adapter(I2C_BUS);
-+	if (!adapter)
-+	{
-+		pr_err(TAG "failed to get the i2c bus number\n");
-+		return -ENODEV;
-+	}
-+
-+	client_l = i2c_new_client_device(adapter,  &oled_info_l);
-+	if (!client_l)
-+	{
-+		pr_err(TAG "Failed to create i2c client device\n");
-+		i2c_put_adapter(adapter);
-+		return -EINVAL;
-+	}
-+
-+	client_r = i2c_new_client_device(adapter,  &oled_info_r);
-+	if (!client_r)
-+	{
-+		pr_err(TAG "Failed to create i2c client device\n");
-+		i2c_put_adapter(adapter);
-+		return -EINVAL;
-+	}
-+
-+	return 0;
-+}
-+
-+void i2c_driver_exit(void)
-+{
-+	if (client_l)
-+		i2c_unregister_device(client_l);
-+
-+	if (client_r)
-+		i2c_unregister_device(client_r);
-+
-+	i2c_put_adapter(adapter);
-+
-+	pr_info(TAG "deinitialize\n");
-+}
-+*/
-+
 +module_i2c_driver(i2c_oled_driver);
 +
 +MODULE_AUTHOR("jarsulk, p2119, PCO");
-+MODULE_DESCRIPTION("I.MX 8M Plus DSI - Crosslink - OLED driver");
++MODULE_DESCRIPTION("I.MX 8M Plus DSI - Crosslink - OLED SVGA060 800x600 driver");
 +MODULE_LICENSE("GPL");
 +
 +/*
-+https://github.com/Johannes4Linux/Linux_Driver_Tutorial/tree/main/22_dt_i2c
-+https://www.youtube.com/watch?v=GQ1XwFWA2Nw
-+https://github.com/Johannes4Linux/Linux_Driver_Tutorial/tree/main/36_i2c_driver
-+https://krinkinmu.github.io/2020/07/12/linux-kernel-modules.html
-+https://docs.kernel.org/i2c/instantiating-devices.html
-+https://www.kernel.org/doc/Documentation/devicetree/bindings/i2c/i2c.txt
++
++i2cdetect -y 3  #I2C4
++
++# Left OLED
++i2cset -y 3 0x0e 0x10 0x00  # turn on screen
++i2cset -y 3 0x0e 0x01 0x34  # external sync with DE
++i2cset -y 3 0x0e 0x02 0x00  # sync active high
++i2cset -y 3 0x0e 0x19 0xb0  # Vcom level for temperature
++i2cset -y 3 0x0e 0x20 0x00  # start of gamma correction
++i2cset -y 3 0x0e 0x21 0x00
++i2cset -y 3 0x0e 0x22 0x40
++i2cset -y 3 0x0e 0x23 0x01
++i2cset -y 3 0x0e 0x24 0x48
++i2cset -y 3 0x0e 0x25 0x01
++i2cset -y 3 0x0e 0x26 0x57
++i2cset -y 3 0x0e 0x27 0x01
++i2cset -y 3 0x0e 0x28 0x67
++i2cset -y 3 0x0e 0x29 0x01
++i2cset -y 3 0x0e 0x2a 0x74
++i2cset -y 3 0x0e 0x2b 0x01
++i2cset -y 3 0x0e 0x2c 0x81
++i2cset -y 3 0x0e 0x2d 0x01
++i2cset -y 3 0x0e 0x2e 0x8f
++i2cset -y 3 0x0e 0x2f 0x01
++i2cset -y 3 0x0e 0x30 0x9a
++i2cset -y 3 0x0e 0x31 0x01
++i2cset -y 3 0x0e 0x32 0xa7
++i2cset -y 3 0x0e 0x33 0x01
++i2cset -y 3 0x0e 0x34 0xb3
++i2cset -y 3 0x0e 0x35 0x01
++i2cset -y 3 0x0e 0x36 0xbf
++i2cset -y 3 0x0e 0x37 0x01
++i2cset -y 3 0x0e 0x38 0xcb
++i2cset -y 3 0x0e 0x39 0x01
++i2cset -y 3 0x0e 0x3a 0xd6
++i2cset -y 3 0x0e 0x3b 0x01
++i2cset -y 3 0x0e 0x3c 0xe0
++i2cset -y 3 0x0e 0x3d 0x01
++i2cset -y 3 0x0e 0x3e 0xea
++i2cset -y 3 0x0e 0x3f 0x01
++i2cset -y 3 0x0e 0x40 0x00
++i2cset -y 3 0x0e 0x41 0x02  # end of gamma correction
++
++# Right OLED
++i2cset -y 3 0x0f 0x10 0x00  # turn on screen
++i2cset -y 3 0x0f 0x01 0x34  # external sync with DE
++i2cset -y 3 0x0f 0x02 0x00  # sync active high
++i2cset -y 3 0x0f 0x19 0xb0  # Vcom level for temperature
++i2cset -y 3 0x0f 0x20 0x00  # start of gamma correction
++i2cset -y 3 0x0f 0x21 0x00
++i2cset -y 3 0x0f 0x22 0x40
++i2cset -y 3 0x0f 0x23 0x01
++i2cset -y 3 0x0f 0x24 0x48
++i2cset -y 3 0x0f 0x25 0x01
++i2cset -y 3 0x0f 0x26 0x57
++i2cset -y 3 0x0f 0x27 0x01
++i2cset -y 3 0x0f 0x28 0x67
++i2cset -y 3 0x0f 0x29 0x01
++i2cset -y 3 0x0f 0x2a 0x74
++i2cset -y 3 0x0f 0x2b 0x01
++i2cset -y 3 0x0f 0x2c 0x81
++i2cset -y 3 0x0f 0x2d 0x01
++i2cset -y 3 0x0f 0x2e 0x8f
++i2cset -y 3 0x0f 0x2f 0x01
++i2cset -y 3 0x0f 0x30 0x9a
++i2cset -y 3 0x0f 0x31 0x01
++i2cset -y 3 0x0f 0x32 0xa7
++i2cset -y 3 0x0f 0x33 0x01
++i2cset -y 3 0x0f 0x34 0xb3
++i2cset -y 3 0x0f 0x35 0x01
++i2cset -y 3 0x0f 0x36 0xbf
++i2cset -y 3 0x0f 0x37 0x01
++i2cset -y 3 0x0f 0x38 0xcb
++i2cset -y 3 0x0f 0x39 0x01
++i2cset -y 3 0x0f 0x3a 0xd6
++i2cset -y 3 0x0f 0x3b 0x01
++i2cset -y 3 0x0f 0x3c 0xe0
++i2cset -y 3 0x0f 0x3d 0x01
++i2cset -y 3 0x0f 0x3e 0xea
++i2cset -y 3 0x0f 0x3f 0x01
++i2cset -y 3 0x0f 0x40 0x00
++i2cset -y 3 0x0f 0x41 0x02  # end of gamma correction
++
++# enable test screen
++i2cset -y 3 0x0e 0x10 0x00  # turn on screen left
++i2cset -y 3 0x0f 0x10 0x00  # turn on screen right
++i2cset -y 3 0x0e 0x4a 0x02  # test screen left
++i2cset -y 3 0x0f 0x4a 0x01  # test screen right
++
++# disable test screen
++i2cset -y 3 0x0e 0x4a 0x00
++i2cset -y 3 0x0f 0x4a 0x00
++
++# I2C internal registers 
++i2cset -y 3 0x42 0x00 0x00  # reset on
++i2cset -y 3 0x42 0x00 0x01  # reset off
++i2cget -y 3 0x42 0x00
++
 +*/
+\ No newline at end of file
